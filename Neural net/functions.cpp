@@ -8,9 +8,9 @@
 #include "functions.h"
 
 double localError,       //Variable de error local para el entrenamiento
-       errorSum,        //Suma total del error, focalizado para detener el entrenamiento
+       errorSum,        //Suma total del error, para detener el entrenamiento
        *tmpIn,          //Array que contiene los patrones de entrada de forma temporal
-       *tmpOut;         //Array que ontiene los patrones de salida de forma temporal
+       *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
 char f[32];     // file names
@@ -36,7 +36,7 @@ void trainNet(void) {
     NN.outputNum = outp;
     NN.hiddenNum = hid;
     NN.targetNum = outp;
-    NN.CreateNet();
+    NN.createNet();
     tmpIn = new double[NN.inputNum];
     tmpOut = new double[NN.outputNum];
 
@@ -45,8 +45,9 @@ void trainNet(void) {
     trainSize = dataSet.setSize();
 
 
-    NN.LR = 0.5f;      //learning rate
-    NN.Alpha = 0.3f;    //Momentum
+    NN.LR = 0.5f;      // learning rate
+    NN.Alpha = 0.3f;    // Momentum
+    NN.Lambda = 1;      // Regularization strength
     errorSum = 1000;        // para detener la red en el error deseado
 
     // entrenamiento
@@ -65,7 +66,7 @@ void trainNet(void) {
             for (j = 0; j < NN.outputNum; j++) {
                 NN.Target[j] = tmpOut[j];
             }
-            NN.TestNet();
+            NN.testNet();
             for (j = 0; j < NN.inputNum; j++) {
                 cout << NN.Inputs[j] << " ";
             }
@@ -78,7 +79,7 @@ void trainNet(void) {
                 double delta = NN.Target[j] - NN.Outputs[j];
                 localError += delta * delta;
             }
-            NN.TrainNet();
+            NN.trainNet();
         }
         // epoch error calculation
         errorSum = sqrt((localError) * (localError));
@@ -131,7 +132,7 @@ void useNet(void) {
         cin >> NN.Inputs[i];
         cout << endl;
     }
-    NN.TestNet();
+    NN.testNet();
     cout << "Output:" << endl;
     for (int i = 0; i < NN.outputNum; i++) {
         cout << convertDiscrete(NN.Outputs[i]) << endl;

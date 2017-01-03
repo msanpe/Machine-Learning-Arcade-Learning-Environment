@@ -39,7 +39,7 @@ NeuralNetwork::~NeuralNetwork() {
 }
 
 // variable initialization and space allocation
-void NeuralNetwork::CreateNet(void) {
+void NeuralNetwork::createNet(void) {
     Inputs = new double[inputNum];
     Hidden = new double[hiddenNum];
 
@@ -57,14 +57,15 @@ void NeuralNetwork::CreateNet(void) {
 
     InputWeights = createLayer(inputNum, hiddenNum);
     HiddenWeights = createLayer(hiddenNum, outputNum);
+    totalWeights = inputNum * hiddenNum * outputNum;
 
-    RandomWeights();
-    ZeroDeltas();
-    RandomBias();
+    randomWeights();
+    zeroDeltas();
+    randomBias();
 }
 
 // Weights initialization
-void NeuralNetwork::RandomWeights(void) {
+void NeuralNetwork::randomWeights(void) {
     int i, j;
 
     for (i = 0; i < inputNum; i++) {
@@ -81,7 +82,7 @@ void NeuralNetwork::RandomWeights(void) {
 }
 
 // bias initialization
-void NeuralNetwork::RandomBias(void) {
+void NeuralNetwork::randomBias(void) {
     int i;
 
     for (i = 0; i < outputNum; i++) {
@@ -93,7 +94,7 @@ void NeuralNetwork::RandomBias(void) {
     }
 }
 
-void NeuralNetwork::ZeroDeltas(void) {
+void NeuralNetwork::zeroDeltas(void) {
     int i;
 
     for (i = 0; i < outputNum; i++) {
@@ -107,7 +108,7 @@ void NeuralNetwork::ZeroDeltas(void) {
 
 // transfer function
 double NeuralNetwork::sigmoid(double num) {
-    return (1 / (1 + exp(-num)));
+    return (1.0 / (1.0 + exp(-num)));
 }
 
 void NeuralNetwork::feedForward(void) {
@@ -140,12 +141,11 @@ void NeuralNetwork::computeError(void) {
     double errorSum = 0.0f;
     Error = 0;
 
-
     // output layer error
     for (i = 0; i < outputNum; i++) {
         Err = (Target[i] - Outputs[i]);
-        Delta[i] = (1 - Outputs[i]) * Outputs[i] * Err; // error gradient
-        Error += 0.5f * Err * Err;
+        Delta[i] = (1 - Outputs[i]) * Outputs[i] * Err; // partial derivative of the total error with respect to the net input of the neuron
+        Error += (0.5f * Err * Err) + (0.5f * Lambda * totalWeights); // error with regularization
     }
 
     // hidden layer error
@@ -203,14 +203,12 @@ double Random(int High, int Low) {
     return ((double) rand() / RAND_MAX) * (High - Low) + Low;
 }
 
-void NeuralNetwork::TrainNet(void) {
+void NeuralNetwork::trainNet(void) {
     feedForward();
     computeError();
     backpropagate();
 }
 
-void NeuralNetwork::TestNet(void) {
+void NeuralNetwork::testNet(void) {
     feedForward();
 }
-
-

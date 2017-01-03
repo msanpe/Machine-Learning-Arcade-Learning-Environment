@@ -14,13 +14,13 @@ public:
     NeuralNetwork();
     ~NeuralNetwork();
 
-    void CreateNet(void);
-    void TrainNet(void);
-    void TestNet(void);
+    void createNet(void);
+    void trainNet(void);
+    void testNet(void);
 
-    void RandomWeights(void);
-    void RandomBias(void);
-    void ZeroDeltas(void);
+    void randomWeights(void);
+    void randomBias(void);
+    void zeroDeltas(void);
 
     double *Inputs;
     double *Outputs;
@@ -29,11 +29,13 @@ public:
     double Error;     //error total en la red
     double Alpha;     //momentum
     double LR;       //learning rate
+    double Lambda;   //regularization strength
 
     int inputNum;    //numero de elementos de entrada
     int outputNum;   //elementos en la capa oculta
     int hiddenNum;   //elementos en la capa de salida
     int targetNum;   //numero de objetivos
+    int totalWeights; // numero de pesos
 
 private:
     double *Hidden;
