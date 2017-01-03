@@ -57,6 +57,7 @@ private:
     void computeError(void);
     void backpropagate(void);
     double sigmoid(double num);
+    double regSumSquaredVals();
 
 };
 

@@ -139,13 +139,14 @@ void NeuralNetwork::feedForward(void) {
 void NeuralNetwork::computeError(void) {
     int i, j;
     double errorSum = 0.0f;
+    double sumSquaredVals = regSumSquaredVals();
     Error = 0;
 
     // output layer error
     for (i = 0; i < outputNum; i++) {
         Err = (Target[i] - Outputs[i]);
         Delta[i] = (1 - Outputs[i]) * Outputs[i] * Err; // partial derivative of the total error with respect to the net input of the neuron
-        Error += (0.5f * Err * Err) + (0.5f * Lambda * totalWeights); // error with regularization
+        Error += (0.5f * Err * Err) + (0.5f * Lambda * sumSquaredVals); // error with regularization
     }
 
     // hidden layer error
@@ -187,6 +188,28 @@ void NeuralNetwork::backpropagate(void) {
     for (i = 0; i < hiddenNum; i++) {
         HBias[i] += LR * HDelta[i];
     }
+}
+
+double NeuralNetwork::regSumSquaredVals() {
+  int i, j;
+  double sumSquaredVals = 0.0;
+
+  // output layer
+  for (i = 0; i < hiddenNum; i++) {
+      for (j = 0; j < outputNum; j++) {
+          sumSquaredVals += (HiddenWeights[i][j] * HiddenWeights[i][j]);
+
+      }
+  }
+
+  // hidden layer
+  for (i = 0; i < inputNum; i++) {
+      for (j = 0; j < hiddenNum; j++) {
+          sumSquaredVals += (InputWeights[i][j] * InputWeights[i][j]);
+      }
+  }
+
+  return sumSquaredVals;
 }
 
 // weights array creator
