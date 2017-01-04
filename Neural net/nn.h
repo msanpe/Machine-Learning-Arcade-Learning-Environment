@@ -35,7 +35,6 @@ public:
     int outputNum;   //elementos en la capa oculta
     int hiddenNum;   //elementos en la capa de salida
     int targetNum;   //numero de objetivos
-    int totalWeights; // numero de pesos
 
 private:
     double *Hidden;

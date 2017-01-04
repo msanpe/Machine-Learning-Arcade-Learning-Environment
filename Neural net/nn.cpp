@@ -57,7 +57,6 @@ void NeuralNetwork::createNet(void) {
 
     InputWeights = createLayer(inputNum, hiddenNum);
     HiddenWeights = createLayer(hiddenNum, outputNum);
-    totalWeights = inputNum * hiddenNum * outputNum;
 
     randomWeights();
     zeroDeltas();
