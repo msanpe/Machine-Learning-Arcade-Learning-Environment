@@ -39,11 +39,6 @@ class LinearRegression{
     float getErr(int idx);
     void actualizarB(float alpha, float err, int idx);
     void train(float alpha);
-    //float getBias(int index);
-    //float getInput(int i0, int i1);
-    //float calculatePrediction(float output);
-    //float calculateOutput(float x0, float x1);
-    //int trainModel();
 
 
 };
@@ -71,8 +66,7 @@ void LinearRegression::init(string file){
     ifstream ifs;
     ifs.open(file.c_str(), ifstream::in);
     
-    ifs >> tam;// la primera linea del fichero contine el tamaño de las tuplas
-    
+    ifs >> tam;
     inputs.resize(tam - 1);
     //outputs.resize(tam); 
     b.resize(tam); 
