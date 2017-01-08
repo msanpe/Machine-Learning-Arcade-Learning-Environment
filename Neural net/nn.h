@@ -21,6 +21,7 @@ public:
     void randomWeights(void);
     void randomBias(void);
     void zeroDeltas(void);
+    void saveNet(char *p);
 
     double *Inputs;
     double *Outputs;
@@ -47,8 +48,8 @@ private:
 
     double *Delta;
     double *HDelta;
-    double *DWeight;
-    double *HDWeight;
+    double *DWeights;
+    double *HDWeights;
 
     double Err;
 
@@ -57,7 +58,6 @@ private:
     void backpropagate(void);
     double sigmoid(double num);
     double regSumSquaredVals();
-
 };
 
 double **createLayer(int Row, int Col);

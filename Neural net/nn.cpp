@@ -13,8 +13,8 @@ NeuralNetwork::NeuralNetwork() {
     OBias = 0; //output bias
     Delta = 0;
     HDelta = 0;
-    DWeight = 0;
-    HDWeight = 0;
+    DWeights = 0;
+    HDWeights = 0;
     InputWeights = 0;
     HiddenWeights = 0;
 }
@@ -31,8 +31,8 @@ NeuralNetwork::~NeuralNetwork() {
     delete[] Delta;
     delete[] HDelta;
 
-    delete[] DWeight;
-    delete[] HDWeight;
+    delete[] DWeights;
+    delete[] HDWeights;
 
     delete[] InputWeights;
     delete[] HiddenWeights;
@@ -52,8 +52,8 @@ void NeuralNetwork::createNet(void) {
     Delta = new double[outputNum];
     HDelta = new double[hiddenNum];
 
-    DWeight = new double[outputNum];
-    HDWeight = new double[hiddenNum];
+    DWeights = new double[outputNum];
+    HDWeights = new double[hiddenNum];
 
     InputWeights = createLayer(inputNum, hiddenNum);
     HiddenWeights = createLayer(hiddenNum, outputNum);
@@ -97,11 +97,11 @@ void NeuralNetwork::zeroDeltas(void) {
     int i;
 
     for (i = 0; i < outputNum; i++) {
-        DWeight[i] = 0;
+        DWeights[i] = 0;
     }
 
     for (i = 0; i < hiddenNum; i++) {
-        HDWeight[i] = 0;
+        HDWeights[i] = 0;
     }
 }
 
@@ -165,16 +165,16 @@ void NeuralNetwork::backpropagate(void) {
     // output layer
     for (i = 0; i < hiddenNum; i++) {
         for (j = 0; j < outputNum; j++) {
-            HiddenWeights[i][j] += LR * Delta[j] * Hidden[i] + Alpha * DWeight[j]; // backprop with momentum
-            DWeight[j] = LR * Delta[j] * Hidden[i];
+            HiddenWeights[i][j] += LR * Delta[j] * Hidden[i] + Alpha * DWeights[j]; // backprop with momentum
+            DWeights[j] = LR * Delta[j] * Hidden[i];
         }
     }
 
     // hidden layer
     for (i = 0; i < inputNum; i++) {
         for (j = 0; j < hiddenNum; j++) {
-            InputWeights[i][j] += LR * HDelta[j] * Inputs[i] + Alpha * HDWeight[j];
-            HDWeight[j] = LR * HDelta[j] * Inputs[i];
+            InputWeights[i][j] += LR * HDelta[j] * Inputs[i] + Alpha * HDWeights[j];
+            HDWeights[j] = LR * HDelta[j] * Inputs[i];
         }
     }
 
@@ -233,4 +233,70 @@ void NeuralNetwork::trainNet(void) {
 
 void NeuralNetwork::testNet(void) {
     feedForward();
+}
+
+void NeuralNetwork::saveNet(char *p) {
+    FILE *fw = fopen(p, "w");
+
+    if (!fw) {
+        perror(p);
+        return;
+    }
+
+    int i, j;
+
+    fprintf(fw, "%d\n", inputNum);
+    fprintf(fw, "%d\n", hiddenNum);
+    fprintf(fw, "%d\n", outputNum);
+    fprintf(fw, "%d\n", targetNum);
+
+    // save momentum and LR
+    fprintf(fw, "%lf\n", Alpha);
+    fprintf(fw, "%lf", LR);
+    fprintf(fw, "\n");
+    // Save bias output layer
+    for (i = 0; i < outputNum; i++) {
+        fprintf(fw, "%lf  ", OBias[i]);
+    }
+
+    fprintf(fw, "\n\n");
+
+    // save bias hidden layer
+    for (i = 0; i < hiddenNum; i++) {
+        fprintf(fw, "%lf  ", HBias[i]);
+    }
+
+    fprintf(fw, "\n\n");
+
+    // save input weights
+    for (i = 0; i < inputNum; i++) {
+        for (j = 0; j < hiddenNum; j++) {
+            fprintf(fw, "%lf  ", InputWeights[i][j]);
+        }
+    }
+
+    fprintf(fw, "\n\n\n");
+
+    // save hidden weights
+    for (i = 0; i < hiddenNum; i++) {
+        for (j = 0; j < outputNum; j++) {
+            fprintf(fw, "%lf  ", HiddenWeights[i][j]);
+        }
+    }
+
+    fprintf(fw, "\n\n");
+
+    // save deltas
+    for (i = 0; i < outputNum; i++) {
+        fprintf(fw, "%lf  ", DWeights[i]);
+    }
+
+    fprintf(fw, "\n\n");
+
+    for (i = 0; i < hiddenNum; i++) {
+        fprintf(fw, "%lf  ", HDWeights[i]);
+    }
+
+    fflush(fw);
+    fclose(fw);
 }

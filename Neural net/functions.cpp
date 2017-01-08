@@ -13,7 +13,7 @@ double localError,       //Variable de error local para el entrenamiento
        *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
-char f[32];     // file names
+char f[32], n[32];     // file names
 int m;
 bool activateDiscrete = false;   // varia entre discreto y continuo
 NeuralNetwork NN;
@@ -30,6 +30,9 @@ void trainNet(void) {
     cout << "Training data file: " << endl;
     cin.width(31);
     cin >> f;
+    cout << "Filename to save net: " << endl;
+    cin.width (31);
+    cin >> n;
     srand(time(NULL));
 
     NN.inputNum = inp;
@@ -86,6 +89,8 @@ void trainNet(void) {
         localError = 0;
     }
     cout << "Training ended in " << i << " epochs" << endl;
+    NN.saveNet(n);
+    cout << "Network weights saved in " << n << endl;
 }
 
 
