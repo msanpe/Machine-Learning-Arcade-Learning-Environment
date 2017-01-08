@@ -300,3 +300,53 @@ void NeuralNetwork::saveNet(char *p) {
     fflush(fw);
     fclose(fw);
 }
+
+void NeuralNetwork::loadNet(char *p) {
+    FILE *fw = fopen(p, "r");
+
+    if (!fw) {
+        perror(p);
+        return;
+    }
+
+    int i, j;
+
+    fscanf(fw, "%d", &inputNum);
+    fscanf(fw, "%d", &hiddenNum);
+    fscanf(fw, "%d", &outputNum);
+    fscanf(fw, "%d", &targetNum);
+
+    createNet();
+
+    fscanf(fw, "%lf\n\n", &Alpha);
+    fscanf(fw, "%lf", &LR);
+
+    for (i = 0; i < outputNum; i++) {
+        fscanf(fw, "%lf", &OBias[i]);
+    }
+    for (i = 0; i < hiddenNum; i++) {
+        fscanf(fw, "%lf", &HBias[i]);
+    }
+
+    for (i = 0; i < inputNum; i++) {
+        for (j = 0; j < hiddenNum; j++) {
+            fscanf(fw, "%lf", &InputWeights[i][j]);
+        }
+    }
+
+    for (i = 0; i < hiddenNum; i++) {
+        for (j = 0; j < outputNum; j++) {
+            fscanf(fw, "%lf", &HiddenWeights[i][j]);
+        }
+    }
+
+    for (i = 0; i < outputNum; i++) {
+        fscanf(fw, "%lf  ", &DWeights[i]);
+    }
+
+    for (i = 0; i < hiddenNum; i++) {
+        fscanf(fw, "%lf  ", &HDWeights[i]);
+    }
+
+    fclose(fw);
+}

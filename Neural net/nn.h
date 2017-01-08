@@ -22,6 +22,7 @@ public:
     void randomBias(void);
     void zeroDeltas(void);
     void saveNet(char *p);
+    void loadNet(char *p);
 
     double *Inputs;
     double *Outputs;

@@ -100,14 +100,16 @@ int menu(void) {
     cout << "1. Train new network" << endl;
     cout << "2. Switch between continuos and discrete outputs" << endl;
     cout << "3. Test network" << endl;
-    cout << "4. Exit" << endl;
+    cout << "4. Load network" << endl;
+    cout << "5. Exit" << endl;
     cin >> m;
     cout << endl;
 
     if (m == 1)      trainNet();
     else if (m == 2) toggleDiscrete();
     else if (m == 3) useNet();
-    else if (m == 4) return 1;
+    else if (m == 4) loadNet();
+    else if (m == 5) return 1;
     else             return 0;
 }
 
@@ -142,4 +144,13 @@ void useNet(void) {
     for (int i = 0; i < NN.outputNum; i++) {
         cout << convertDiscrete(NN.Outputs[i]) << endl;
     }
+}
+
+void loadNet() {
+    NeuralNetwork NN;
+    cout << "Insert weights file: " << endl;
+    cin.width(31);
+    cin >> f;
+    NN.loadNet(f);  //Recupera la red del archivo dado
+    useNet();
 }

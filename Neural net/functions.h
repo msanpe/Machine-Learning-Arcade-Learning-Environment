@@ -10,5 +10,6 @@ void useNet(void);
 void toggleDiscrete(void);
 int menu(void);
 double convertDiscrete(double);
+void loadNet();
 
 #endif
