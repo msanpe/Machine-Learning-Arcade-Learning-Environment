@@ -1,0 +1,20 @@
+Instance: 0-----> Prediction for output y0: 0
+
+Instance: 1-----> Prediction for output y0: 0
+
+Instance: 2-----> Prediction for output y0: 0
+
+Instance: 3-----> Prediction for output y0: 0
+
+Instance: 4-----> Prediction for output y0: 0
+
+Instance: 5-----> Prediction for output y0: 1
+
+Instance: 6-----> Prediction for output y0: 1
+
+Instance: 7-----> Prediction for output y0: 1
+
+Instance: 8-----> Prediction for output y0: 1
+
+Instance: 9-----> Prediction for output y0: 1
+
