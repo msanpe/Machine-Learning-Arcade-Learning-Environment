@@ -77,20 +77,20 @@ Tambien se puede entrenar por número de epocas si se prefiere
     
     ./net   
 **Uso:**
-
-    Una vez ejecutada, se mostrará en pantalla un menu con diversas opciones
+    
+    Una vez ejecutada, se mostrará en pantalla un menu con diversas opciones
     1. Train new network
     2. Switch between continuos and discrete outputs
     3. Test network
     4. Load network
     5. Exit
     
-    Para entrenar una nueva red, elegir la opción 1, ingresar el fichero de datos de entrenamiento
+    Para entrenar una nueva red, elegir la opción 1, ingresar el fichero de datos de entrenamiento
     y el nombre del fichero donde quieres guardar la arquitectura y pesos de la red.
     
-    Cuando finalice el entrenamiento se podrá probar la red entrenada mediante la opción 3 
+    Cuando finalice el entrenamiento se podrá probar la red entrenada mediante la opción 3 
     donde habrá que ingresar las entradas de la red.
-   
-    Para cargar una red ya entrenada usaremos la opción 4.
     
-    La opción 2 sirve para cambiar entre salidas discretas (1 o 0) y continuas (0,98764).
+    Para cargar una red ya entrenada usaremos la opción 4.
+    
+    La opción 2 sirve para cambiar entre salidas discretas (1 o 0) y continuas (0,98764).
