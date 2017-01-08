@@ -1,7 +1,10 @@
 //
 // Created by Miguel on 21/12/2016.
 //
-
+#include <time.h>
+#include <iostream>
+#include "nn.h"
+#include "data.h"
 #include "functions.h"
 
 double localError,       //Variable de error local para el entrenamiento
@@ -10,7 +13,7 @@ double localError,       //Variable de error local para el entrenamiento
        *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
-char f[32];     // file names
+char f[32], n[32];     // file names
 int m;
 bool activateDiscrete = false;   // varia entre discreto y continuo
 NeuralNetwork NN;
@@ -27,6 +30,9 @@ void trainNet(void) {
     cout << "Training data file: " << endl;
     cin.width(31);
     cin >> f;
+    cout << "Filename to save net: " << endl;
+    cin.width (31);
+    cin >> n;
     srand(time(NULL));
 
     NN.inputNum = inp;
@@ -65,13 +71,13 @@ void trainNet(void) {
             }
             NN.testNet();
             for (j = 0; j < NN.inputNum; j++) {
-              //  cout << NN.Inputs[j] << " ";
+                cout << NN.Inputs[j] << " ";
             }
-            //cout << " ---> ";
+            cout << " ---> ";
             for (j = 0; j < NN.outputNum; j++) {
-            //  cout << NN.Outputs[j] << " ";
+                cout << NN.Outputs[j] << " ";
             }
-            //cout << endl;
+            cout << endl;
             for (j = 0; j < NN.outputNum; j++) {
                 double delta = NN.Target[j] - NN.Outputs[j];
                 localError += delta * delta;
@@ -83,6 +89,8 @@ void trainNet(void) {
         localError = 0;
     }
     cout << "Training ended in " << i << " epochs" << endl;
+    NN.saveNet(n);
+    cout << "Network weights saved in " << n << endl;
 }
 
 
@@ -92,14 +100,16 @@ int menu(void) {
     cout << "1. Train new network" << endl;
     cout << "2. Switch between continuos and discrete outputs" << endl;
     cout << "3. Test network" << endl;
-    cout << "4. Exit" << endl;
+    cout << "4. Load network" << endl;
+    cout << "5. Exit" << endl;
     cin >> m;
     cout << endl;
 
     if (m == 1)      trainNet();
     else if (m == 2) toggleDiscrete();
     else if (m == 3) useNet();
-    else if (m == 4) return 1;
+    else if (m == 4) loadNet();
+    else if (m == 5) return 1;
     else             return 0;
 }
 
@@ -134,4 +144,13 @@ void useNet(void) {
     for (int i = 0; i < NN.outputNum; i++) {
         cout << convertDiscrete(NN.Outputs[i]) << endl;
     }
+}
+
+void loadNet() {
+    NeuralNetwork NN;
+    cout << "Insert weights file: " << endl;
+    cin.width(31);
+    cin >> f;
+    NN.loadNet(f);  //Recupera la red del archivo dado
+    useNet();
 }

@@ -20,7 +20,7 @@ private:
 
     char *file;
 public:
-    data(int a, int b, const char *p);
+    data(int a, int b, char *p);
     ~data();
     void readFile(void);
     void getTrainingData(int n, double *p, double *s);

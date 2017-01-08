@@ -4,10 +4,10 @@
 
 #include "data.h"
 
-data::data(int a, int b, const char *p) {
+data::data(int a, int b, char *p) {
     in = a;       //Numero de entradas de la red
     out = b;      //Numero de salidas de la red;
-    file =  const_cast<char*>(p);
+    file = p;
 }
 
 data::~data() {

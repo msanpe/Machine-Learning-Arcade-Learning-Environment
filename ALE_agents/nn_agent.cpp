@@ -26,7 +26,7 @@ double localError,       //Variable de error local para el entrenamiento
        *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
-std::string f;     // file names
+std::string f, n;     // file names
 int m;
 int c = 0; // control del main loop
 bool activateDiscrete = false;   // varia entre discreto y continuo
@@ -138,6 +138,8 @@ void trainNet(void) {
         localError = 0;
     }
     std::cout << "Training ended in " << i << " epochs" << std::endl;
+    NN.saveNet(n);
+    cout << "Network weights saved in " << n << endl;
 }
 
 
@@ -243,6 +245,15 @@ void useNetOnGame(void) {
   }
 }
 
+void loadNet() {
+    NeuralNetwork NN;
+    cout << "Insert weights file: " << endl;
+    cin.width(31);
+    cin >> f;
+    NN.loadNet(f);  //Recupera la red del archivo dado
+    menu();
+}
+
 int menu(void) {
     std::cout << std::endl;
     std::cout << "Menu" << std::endl;
@@ -250,7 +261,8 @@ int menu(void) {
     std::cout << "2. Switch between continuos and discrete outputs" << std::endl;
     std::cout << "3. Test network" << std::endl;
     std::cout << "4. Test on game" << std::endl;
-    std::cout << "5. Exit" << std::endl;
+    std::cout << "5. Load network" << std::endl;
+    std::cout << "6. Exit" << std::endl;
     std::cin >> m;
     std::cout << std::endl;
 
@@ -258,7 +270,8 @@ int menu(void) {
     else if (m == 2) toggleDiscrete();
     else if (m == 3) useNet();
     else if (m == 4) useNetOnGame();
-    else if (m == 5) return 1;
+    else if (m == 5) loadNet();
+    else if (m == 6) return 1;
     else             return 0;
 }
 
