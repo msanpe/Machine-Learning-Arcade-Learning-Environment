@@ -8,7 +8,7 @@
 #include "functions.h"
 
 double localError,       //Variable de error local para el entrenamiento
-       errorSum,        //Suma total del error, para detener el entrenamiento
+       meanSquaredError,        //Suma total del error, para detener el entrenamiento
        *tmpIn,          //Array que contiene los patrones de entrada de forma temporal
        *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
@@ -51,10 +51,10 @@ void trainNet(void) {
     NN.LR = 0.5f;      // learning rate
     NN.Alpha = 0.3f;    // Momentum
     NN.Lambda = 1;      // Regularization strength
-    errorSum = 1000;        // para detener la red en el error deseado
+    meanSquaredError = 1000;        // para detener la red en el error deseado
 
     // entrenamiento
-    for (i = 0; errorSum > 0.01; ++i) { // entrena hasta error deseado
+    for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
 
         if (i == 100000) {  // limite que evita loops infinitos
             cout << "Training is taking too many epochs" << endl;
@@ -85,7 +85,7 @@ void trainNet(void) {
             NN.trainNet();
         }
         // epoch error calculation
-        errorSum = sqrt((localError) * (localError));
+        meanSquaredError = localError/NN.outputNum;
         localError = 0;
     }
     cout << "Training ended in " << i << " epochs" << endl;
