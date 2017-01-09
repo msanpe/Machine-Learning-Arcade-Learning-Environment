@@ -82,6 +82,11 @@ void trainNet(void) {
     std::cin >> f;
     path.append(f);
     path.append(".txt");
+    std::cout << "Filename to save net: " << std::endl;
+    std::cin.width(31);
+    std::cin >> n;
+
+
     srand(time(NULL));
     std::cout << path << std::endl;
     NN.inputNum = inp;
@@ -92,7 +97,7 @@ void trainNet(void) {
     tmpIn = new double[NN.inputNum];
     tmpOut = new double[NN.outputNum];
 
-    data dataSet(NN.inputNum, NN.outputNum, path.c_str());
+    data dataSet(NN.inputNum, NN.outputNum, const_cast<char *>(path.c_str()));
     dataSet.readFile();
     trainSize = dataSet.setSize();
 
@@ -104,8 +109,8 @@ void trainNet(void) {
 
     // entrenamiento
     for (i = 0; errorSum > 0.01; ++i) { // entrena hasta error deseado
-          std::cout << i << std::endl;
-        if (i == 100000) {  // limite que evita loops infinitos
+          std::cout << i << "-->" << errorSum << std::endl;
+        if (i == 10000) {  // limite que evita loops infinitos
             std::cout << "Training is taking too many epochs" << std::endl;
             break;
         }
@@ -138,8 +143,8 @@ void trainNet(void) {
         localError = 0;
     }
     std::cout << "Training ended in " << i << " epochs" << std::endl;
-    NN.saveNet(n);
-    cout << "Network weights saved in " << n << endl;
+    NN.saveNet(const_cast<char *>(n.c_str()));
+    std::cout << "Network weights saved in " << n << std::endl;
 }
 
 
@@ -245,14 +250,7 @@ void useNetOnGame(void) {
   }
 }
 
-void loadNet() {
-    NeuralNetwork NN;
-    cout << "Insert weights file: " << endl;
-    cin.width(31);
-    cin >> f;
-    NN.loadNet(f);  //Recupera la red del archivo dado
-    menu();
-}
+void loadNet();
 
 int menu(void) {
     std::cout << std::endl;
@@ -273,6 +271,14 @@ int menu(void) {
     else if (m == 5) loadNet();
     else if (m == 6) return 1;
     else             return 0;
+}
+
+void loadNet() {
+    std::cout << "Insert weights file: " << std::endl;
+    std::cin.width(31);
+    std::cin >> f;
+    NN.loadNet(const_cast<char *>(f.c_str()));  //Recupera la red del archivo dado
+    menu();
 }
 
 int main(int argc, char **argv) {

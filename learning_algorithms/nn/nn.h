@@ -62,6 +62,6 @@ private:
 };
 
 double **createLayer(int Row, int Col);
-double Random( int High, int Low );
+double generateRandom( int High, int Low );
 
 #endif

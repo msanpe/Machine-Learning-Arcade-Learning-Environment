@@ -1,25 +1,25 @@
 #include "utils.h"
 
 int getTennisPlayerX(ALEInterface &alei) {
-   return alei.getRAM().get(26) + ((rand() % 3) - 1);
+   return alei.getRAM().get(26) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisPlayerY(ALEInterface &alei) {
-   return alei.getRAM().get(24) + ((rand() % 3) - 1);
+   return alei.getRAM().get(24) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisEnemyX(ALEInterface &alei) {
-   return alei.getRAM().get(27) + ((rand() % 3) - 1);
+   return alei.getRAM().get(27) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisEnemyY(ALEInterface &alei) {
-   return alei.getRAM().get(53) + ((rand() % 3) - 1);
+   return alei.getRAM().get(53) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisBallX(ALEInterface &alei) {
-   return alei.getRAM().get(55) + ((rand() % 3) - 1);
+   return alei.getRAM().get(55) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisBallY(ALEInterface &alei) {
-   return alei.getRAM().get(16) + ((rand() % 3) - 1);
+   return alei.getRAM().get(16) + ((rand() % 3) - 1)/ 1;
 }
 int getTennisBallZ(ALEInterface &alei) {
-   return alei.getRAM().get(17) + ((rand() % 3) - 1);
+   return alei.getRAM().get(17) + ((rand() % 3) - 1)/ 1;
 }
 
 float getFreeWayCalle(int param, ALEInterface &alei){

@@ -69,13 +69,13 @@ void NeuralNetwork::randomWeights(void) {
 
     for (i = 0; i < inputNum; i++) {
         for (j = 0; j < hiddenNum; j++) {
-            InputWeights[i][j] = Random(1, -1);
+            InputWeights[i][j] = generateRandom(1, -1);
         }
     }
 
     for (i = 0; i < hiddenNum; i++) {
         for (j = 0; j < outputNum; j++) {
-            HiddenWeights[i][j] = Random(1, -1);
+            HiddenWeights[i][j] = generateRandom(1, -1);
         }
     }
 }
@@ -85,11 +85,11 @@ void NeuralNetwork::randomBias(void) {
     int i;
 
     for (i = 0; i < outputNum; i++) {
-        OBias[i] = Random(1, 0);
+        OBias[i] = generateRandom(1, 0);
     }
 
     for (i = 0; i < hiddenNum; i++) {
-        HBias[i] = Random(1, 0);
+        HBias[i] = generateRandom(1, 0);
     }
 }
 
@@ -220,7 +220,7 @@ double **createLayer(int Row, int Col) {
     return array;
 }
 
-double Random(int High, int Low) {
+double generateRandom(int High, int Low) {
     srand((unsigned int) time(NULL));
     return ((double) rand() / RAND_MAX) * (High - Low) + Low;
 }
