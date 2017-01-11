@@ -68,6 +68,7 @@ ALEInterface alei;
 ALERAM ram;
 ALERAM pram;
 
+
 int lastLives;
 int  action_typo = PLAYER_A_UP;
 
@@ -108,31 +109,31 @@ int al_colores[16][8] = {
 /// Get info from RAM
 ///////////////////////////////////////////////////////////////////////////////
 
-int getTennisPlayerX() {
-   return ram.get(26) + ((rand() % 3) - 1);
+float getTennisPlayerX() {
+   return (ram.get(26) + ((rand() % 3) - 1));
 }
-int getTennisPlayerY() {
-   return ram.get(24) + ((rand() % 3) - 1);
+float getTennisPlayerY() {
+   return (ram.get(24) + ((rand() % 3) - 1));
 }
-int getTennisEnemyX() {
-   return ram.get(27) + ((rand() % 3) - 1);
+float getTennisEnemyX() {
+   return (ram.get(27) + ((rand() % 3) - 1));
 }
-int getTennisEnemyY() {
-   return ram.get(53) + ((rand() % 3) - 1);
+float getTennisEnemyY() {
+   return (ram.get(53) + ((rand() % 3) - 1));
 }
-int getTennisBallX() {
-   return ram.get(55) + ((rand() % 3) - 1);
+float getTennisBallX() {
+   return (ram.get(55) + ((rand() % 3) - 1));
 }
-int getTennisBallY() {
-   return ram.get(16) + ((rand() % 3) - 1);
+float getTennisBallY() {
+   return (ram.get(16) + ((rand() % 3) - 1));
 }
-int getTennisBallZ() {
-   return ram.get(17) + ((rand() % 3) - 1);
+float getTennisBallZ() {
+   return (ram.get(17) + ((rand() % 3) - 1));
 }
 
-int getFreeWayCalle(int param){
+float getFreeWayCalle(int param){
 
-    int valor = 0;
+    float valor = 0;
      switch(param){
        case 0:
             valor = ram.get(43) + ((rand() % 3) - 1);
@@ -298,14 +299,14 @@ void printNRam(ALERAM nram, int desp, bool color, int ac_typo){
   }
 }
 
-std::string convertVectorToString(std::vector<int> vec){
+std::string convertVectorToString(std::vector<float> vec){
   std::ostringstream oss;
 
   if (!vec.empty())
   {
     // Convert all but the last element to avoid a trailing ","
     std::copy(vec.begin(), vec.end()-1,
-        std::ostream_iterator<int>(oss, " "));
+        std::ostream_iterator<float>(oss, ","));
 
     // Now add the last element with no delimiter
     oss << vec.back();
@@ -340,21 +341,14 @@ int doAction(char c, float &reward){
   return PLAYER_A_NOOP;
 }
 
-void addTennisData(std::vector<int> & v_inputs, std::vector<int> & v_outputs, int action_typo)
+void addTennisData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
 {
-
   v_inputs.push_back(getTennisPlayerX());
-  v_inputs.push_back(getTennisPlayerY());
-  v_inputs.push_back(getTennisEnemyX());
-  v_inputs.push_back(getTennisEnemyY());
-  v_inputs.push_back(getTennisBallX());
   v_inputs.push_back(getTennisBallY());
-  v_inputs.push_back(getTennisBallZ());
+  v_inputs.push_back(getTennisBallX());
 
-  for(int j=0; j<5; j++){
-    if(j==0 && action_typo == PLAYER_A_FIRE){
-      v_outputs.push_back(1);
-    }else if(j==1 && action_typo == PLAYER_A_UP){
+  for(int j=2; j<4; j++){
+    if(j==1 && action_typo == PLAYER_A_UP){
       v_outputs.push_back(1);
     }else if(j==2 && action_typo == PLAYER_A_RIGHT){
       v_outputs.push_back(1);
@@ -368,7 +362,7 @@ void addTennisData(std::vector<int> & v_inputs, std::vector<int> & v_outputs, in
   }
 }
 
-void addFreewayData(std::vector<int> & v_inputs, std::vector<int> & v_outputs, int action_typo)
+void addFreewayData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
 {
 
   for(int  i =0; i<10; i++){
@@ -406,8 +400,14 @@ void concatenateFiles(){
 /// Do Next Agent Step
 ///////////////////////////////////////////////////////////////////////////////
 float agentStep() {
-   std::vector<int> v_inputs;
-   std::vector<int> v_outputs;
+   std::vector<float> v_inputs;
+   std::vector<float> v_outputs;
+
+
+  if (alei.lives() != lastLives) {
+    --lastLives;
+    alei.act(PLAYER_A_FIRE);
+  }
 
    float reward = 0;
 
@@ -441,7 +441,7 @@ float agentStep() {
           break;
    }
 
-   datafile << convertVectorToString(v_inputs) << std::endl;
+   datafile << convertVectorToString(v_inputs) << ",";
    datafile << convertVectorToString(v_outputs) << std::endl;
 
    count++;
@@ -525,6 +525,7 @@ int main(int argc, char **argv) {
 
    // Main loop
    int step;
+   alei.act(PLAYER_A_FIRE);
 
    for (step = 0; !alei.game_over() && step < maxSteps; ++step){
      initscr();

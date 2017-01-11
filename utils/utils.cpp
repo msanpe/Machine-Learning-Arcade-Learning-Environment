@@ -1,25 +1,25 @@
 #include "utils.h"
 
 int getTennisPlayerX(ALEInterface &alei) {
-   return alei.getRAM().get(26) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(26) + ((rand() % 3) - 1);
 }
 int getTennisPlayerY(ALEInterface &alei) {
-   return alei.getRAM().get(24) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(24) + ((rand() % 3) - 1);
 }
 int getTennisEnemyX(ALEInterface &alei) {
-   return alei.getRAM().get(27) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(27) + ((rand() % 3) - 1);
 }
 int getTennisEnemyY(ALEInterface &alei) {
-   return alei.getRAM().get(53) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(53) + ((rand() % 3) - 1);
 }
 int getTennisBallX(ALEInterface &alei) {
-   return alei.getRAM().get(55) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(55) + ((rand() % 3) - 1);
 }
 int getTennisBallY(ALEInterface &alei) {
-   return alei.getRAM().get(16) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(16) + ((rand() % 3) - 1);
 }
 int getTennisBallZ(ALEInterface &alei) {
-   return alei.getRAM().get(17) + ((rand() % 3) - 1)/ 1;
+   return alei.getRAM().get(17) + ((rand() % 3) - 1);
 }
 
 float getFreeWayCalle(int param, ALEInterface &alei){
@@ -68,13 +68,8 @@ void addTennisData(std::vector<float> & v_inputs, ALEInterface &alei)
 {
 
   v_inputs.push_back(getTennisPlayerX(alei));
-  v_inputs.push_back(getTennisPlayerY(alei));
-
-  v_inputs.push_back(getTennisEnemyX(alei));
-  v_inputs.push_back(getTennisEnemyY(alei));
-  v_inputs.push_back(getTennisBallX(alei));
   v_inputs.push_back(getTennisBallY(alei));
-  v_inputs.push_back(getTennisBallZ(alei));
+  v_inputs.push_back(getTennisBallX(alei));
 
 }
 

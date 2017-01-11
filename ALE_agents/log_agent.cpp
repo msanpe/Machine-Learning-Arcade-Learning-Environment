@@ -74,12 +74,11 @@ float agentStep() {
          v_inputs.push_back(0);
          break;
   }
-
+  logistic.normalizeInstance(v_inputs);
   outputs = logistic.testOnInstance(v_inputs);
   for(int i=0; i<outputs.size(); i++){
-    if(outputs[i] > max){
-      max = outputs[i];
-      action = i;
+    if(outputs[i] == 1){
+      action = i+3;
     }
   }
 
@@ -97,15 +96,24 @@ void toggleDiscrete(void) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void trainLogReg(){
+
+  int n1, n2;
   int epochs = 10;
   std::string filename;
 
   std::cout << "Introduce el nombre del fichero (archivo txt sin extension)" << std::endl;
   std::cin >> filename;
+  std::cout << "Numero de entradas:" << std::endl;
+  std::cin >> n1;
+  std::cout << "Numero de saldas:" << std::endl;
+  std::cin >> n2;
 
   path.append(filename);
   path.append(".txt");
+  logistic.setInputSize(n1);
+  logistic.setOutputSize(n2);
   logistic.openFile(path);
+  logistic.normalizeData();
   std::cout << "Introduce el numero de epocas" << std::endl;
   std::cin >> epochs;
   for(int i = 0; i<epochs; i++){
@@ -133,6 +141,28 @@ void init(){
 
 }
 
+
+void useLogReg(void) {
+    float n;
+    std::vector<float> inps;
+    std::vector<float> n_inps;
+    std::vector<float> outps;
+
+    std::cout << "Ingresar los valores de entrada a la red:" << std::endl;
+    for (int i = 0; i < logistic.getInputSize(); i++) {
+        std::cout << "Input " << (i + 1) << std::endl;
+        std::cin >> n;
+        inps.push_back(n);
+    }
+    logistic.normalizeInstance(inps);
+    outps = logistic.testOnInstance(inps);
+    std::cout << "Output:" << std::endl;
+    for (int i = 0; i < logistic.getOutputSize(); i++) {
+        std::cout << outps[i] << std::endl;
+    }
+}
+
+
 void testLogReg(){
 
   init();
@@ -157,13 +187,15 @@ int menu(){
   std::cout << "1. Train on file" << std::endl;
   std::cout << "2. Toggle Discrete" << std::endl;
   std::cout << "3. Test on game" << std::endl;
-  std::cout << "4. Exit" << std::endl;
+  std::cout << "4. Test on single instance" << std::endl;
+  std::cout << "5. Exit" << std::endl;
   std::cin >> m;
   std::cout << std::endl;
 
   switch (m) {
     case 1:
       trainLogReg();
+      break;
     case 2:
       toggleDiscrete();
       break;
@@ -171,6 +203,9 @@ int menu(){
       testLogReg();
       break;
     case 4:
+      useLogReg();
+      break;
+    case 5:
       return 1;
     default:
       return 0;

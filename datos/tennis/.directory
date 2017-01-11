@@ -1,7 +1,7 @@
 [Dolphin]
-HeaderColumnWidths=570,107,134,265,198
-SortOrder=1
-Timestamp=2017,1,5,15,37,54
+HeaderColumnWidths=292,107,134,265,198
+SortRole=size
+Timestamp=2017,1,10,17,34,34
 Version=3
 ViewMode=1
 VisibleRoles=Details_text,Details_size,Details_date,Details_type,Details_imageSize,CustomizedDetails
