@@ -55,11 +55,11 @@ void trainNet(void) {
     meanSquaredError = 1000;        // para detener la red en el error deseado
 
     // entrenamiento
-    for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
-
-        if (i == 100000) {  // limite que evita loops infinitos
-            cout << "Training is taking too many epochs" << endl;
-            break;
+    for (i = 0; meanSquaredError > 1.55; ++i) { // entrena hasta error deseado
+        cout << "Epoch " << i << " ----> ";
+        if (i == 500000) {  // limite que evita loops infinitos
+            //cout << "Training is taking too many epochs" << endl;
+            //break;
         }
         //Pasa 1 a 1 los patrones de entrada y salida y entrena la red
         for (int current = 0; current < trainSize; current++) {
@@ -70,23 +70,25 @@ void trainNet(void) {
             for (j = 0; j < NN.outputNum; j++) {
                 NN.Target[j] = tmpOut[j];
             }
+            NN.trainNet();
             NN.testNet();
-            for (j = 0; j < NN.inputNum; j++) {
+            /*for (j = 0; j < NN.inputNum; j++) {
                 cout << NN.Inputs[j] << " ";
             }
             cout << " ---> ";
             for (j = 0; j < NN.outputNum; j++) {
                 cout << NN.Outputs[j] << " ";
             }
-            cout << endl;
+            cout << endl;*/
             for (j = 0; j < NN.outputNum; j++) {
                 double delta = NN.Target[j] - NN.Outputs[j];
                 localError += delta * delta;
             }
-            NN.trainNet();
+
         }
         // epoch error calculation
         meanSquaredError = localError/NN.outputNum;
+        cout << " " << "Error: " << meanSquaredError << endl;
         localError = 0;
     }
     cout << "Training ended in " << i << " epochs" << endl;

@@ -77,7 +77,7 @@ void data::normalizeData() {
 }
 
 void data::createDataContainers(void) {
-    Inputs = createContainer(in, dataSize);    // inputs
+    Inputs = createContainer(inp, dataSize);    // inputs
     Outputs = createContainer(out, dataSize);  // targets
 }
 
