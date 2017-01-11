@@ -85,6 +85,14 @@ int data::setSize(void) {
     return dataSize;
 }
 
+double data::getMinVal() {
+  return minVal;
+}
+
+double data::getMaxVal() {
+  return maxVal;
+}
+
 double **createContainer(int Row, int Col) {
     double **array = new double *[Row];
     for (int i = 0; i < Row; i++)

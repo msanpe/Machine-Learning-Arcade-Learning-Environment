@@ -30,6 +30,8 @@ public:
     void readFile(void);
     void getTrainingData(int n, double *p, double *s);
     void createDataContainers(void);
+    double getMinVal();
+    double getMaxVal();
     int setSize(void);
 };
 
