@@ -55,7 +55,7 @@ void trainNet(void) {
     meanSquaredError = 1000;        // para detener la red en el error deseado
 
     // entrenamiento
-    for (i = 0; meanSquaredError > 1.55; ++i) { // entrena hasta error deseado
+    for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
         cout << "Epoch " << i << " ----> ";
         if (i == 500000) {  // limite que evita loops infinitos
             //cout << "Training is taking too many epochs" << endl;

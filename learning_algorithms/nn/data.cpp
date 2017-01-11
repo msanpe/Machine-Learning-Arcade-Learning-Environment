@@ -18,7 +18,7 @@ data::~data() {
 // lee valores de fichero y los almacena hasta que son pedidos
 void data::readFile(void) {
   int j = 0;
-  std::ifstream in(file);
+  std::ifstream in(file.c_str());
   std::string str;
   std::string substr;
 
