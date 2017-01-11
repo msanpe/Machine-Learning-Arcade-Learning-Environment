@@ -7,20 +7,25 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 //Leer un archivo con los patrones de entrada y salida usados por la red
 class data {
 private:
     int dataSize,
-            in,
+            inp,
             out;
 
     double **Inputs, //Contenedores de los datos de la muestras
             **Outputs;
 
-    char *file;
+    double minVal, maxVal;
+    std::string file;
+    void normalizeData();
 public:
-    data(int a, int b, char *p);
+    data(int a, int b, std::string p);
     ~data();
     void readFile(void);
     void getTrainingData(int n, double *p, double *s);

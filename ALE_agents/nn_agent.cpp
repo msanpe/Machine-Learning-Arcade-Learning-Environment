@@ -26,7 +26,7 @@ double localError,       //Variable de error local para el entrenamiento
        *tmpOut;         //Array que contiene los patrones de salida de forma temporal
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
-std::string f, n;     // file names
+std::string f, n, train;     // file names
 int m;
 int c = 0; // control del main loop
 bool activateDiscrete = false;   // varia entre discreto y continuo
@@ -79,7 +79,7 @@ void trainNet(void) {
     std::cin >> outp;
     std::cout << "Training data file: " << std::endl;
     std::cin.width(31);
-    std::cin >> f;
+    std::cin >> train;
     path.append(f);
     path.append(".txt");
     std::cout << "Filename to save net: " << std::endl;
@@ -97,14 +97,15 @@ void trainNet(void) {
     tmpIn = new double[NN.inputNum];
     tmpOut = new double[NN.outputNum];
 
-    data dataSet(NN.inputNum, NN.outputNum, const_cast<char *>(path.c_str()));
+    data dataSet(NN.inputNum, NN.outputNum, train);
     dataSet.readFile();
     trainSize = dataSet.setSize();
 
 
     NN.LR = 0.5f;      // learning rate
     NN.Alpha = 0.3f;    // Momentum
-    NN.Lambda = 1;      // Regularization strength
+    NN.LambdaIH = 0;      // Regularization strength
+    NN.LambdaHO = 0;      // Regularization strength
     meanSquaredError = 1000;        // para detener la red en el error deseado
 
     // entrenamiento

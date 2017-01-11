@@ -4,7 +4,7 @@
 
 #include "data.h"
 
-data::data(int a, int b, char *p) {
+data::data(int a, int b, std::string p) {
     in = a;       //Numero de entradas de la red
     out = b;      //Numero de salidas de la red;
     file = p;
@@ -17,24 +17,35 @@ data::~data() {
 
 // lee valores de fichero y los almacena hasta que son pedidos
 void data::readFile(void) {
-    FILE *fw = fopen(file, "r");
+  int j = 0;
+  std::ifstream in(file);
+  std::string str;
+  std::string substr;
 
-    if (!fw) {
-        perror(file);
-        return;
+  if(!in) {
+    std::cout << "error reading file" << std::endl;
+    return;
+  }
+
+  std::getline(in, str);
+  dataSize = atoi(str.c_str());
+  createDataContainers();
+
+  for (int i = 0; i < dataSize; i++) {
+    std::getline(in, str);
+    std::stringstream ss(str);
+    for (int j = 0; j < inp; ++j) {
+      std::getline( ss, substr, ',' );
+      Inputs[j][i] = atof(substr.c_str());
     }
-
-    fscanf(fw, "%d", &dataSize);
-    createDataContainers();
-
-    for (int i = 0; i < dataSize; i++) {
-        for (int j = 0; j < in; j++) {
-            fscanf(fw, "%lf", &Inputs[j][i]);
-        }
-        for (int j = 0; j < out; j++) {
-            fscanf(fw, "%lf", &Outputs[j][i]);
-        }
+    str = str.substr(inp * 2);
+    for (int j = 0; j < out; ++j) {
+      std::string substr;
+      std::getline( ss, substr, ',' );
+      Outputs[j][i] = atof(substr.c_str());
     }
+  }
+  normalizeData();
 }
 
 void data::getTrainingData(int n, double *p, double *s) { // fill containers with training data
@@ -44,6 +55,25 @@ void data::getTrainingData(int n, double *p, double *s) { // fill containers wit
     for (int i = 0; i < out; i++) {
         s[i] = Outputs[i][n];
     }
+}
+
+void data::normalizeData() {
+  minVal = maxVal = 0;
+
+  for (int i = 0; i < dataSize; i++) {
+    for (int j = 0; j < inp; j++) {
+      if (Inputs[j][i] < minVal)
+        minVal = Inputs[j][i];
+      if (Inputs[j][i] > maxVal)
+        maxVal = Inputs[j][i];
+    }
+  }
+
+  for (int i = 0; i < dataSize; i++) {
+    for (int j = 0; j < inp; j++) {
+      Inputs[j][i] = (Inputs[j][i] - minVal)/(maxVal- minVal);
+    }
+  }
 }
 
 void data::createDataContainers(void) {

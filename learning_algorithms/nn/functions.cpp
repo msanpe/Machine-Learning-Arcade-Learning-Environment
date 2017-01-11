@@ -14,6 +14,7 @@ double localError,       //Variable de error local para el entrenamiento
 int trainSize, j, i;
 int inp, hid, outp;    // layer sizes
 char f[32], n[32];     // file names
+std::string train;
 int m;
 bool activateDiscrete = false;   // varia entre discreto y continuo
 NeuralNetwork NN;
@@ -28,8 +29,7 @@ void trainNet(void) {
     cout << "Number of outputs: " << endl;
     cin >> outp;
     cout << "Training data file: " << endl;
-    cin.width(31);
-    cin >> f;
+    cin >> train;
     cout << "Filename to save net: " << endl;
     cin.width (31);
     cin >> n;
@@ -43,14 +43,15 @@ void trainNet(void) {
     tmpIn = new double[NN.inputNum];
     tmpOut = new double[NN.outputNum];
 
-    data dataSet(NN.inputNum, NN.outputNum, f);
+    data dataSet(NN.inputNum, NN.outputNum, train);
     dataSet.readFile();
     trainSize = dataSet.setSize();
 
 
     NN.LR = 0.5f;      // learning rate
     NN.Alpha = 0.3f;    // Momentum
-    NN.Lambda = 1;      // Regularization strength
+    NN.LambdaIH = 0;      // Regularization strength
+    NN.LambdaHO = 0;      // Regularization strength
     meanSquaredError = 1000;        // para detener la red en el error deseado
 
     // entrenamiento

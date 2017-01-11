@@ -145,7 +145,7 @@ void NeuralNetwork::computeError(void) {
     for (i = 0; i < outputNum; i++) {
         Err = (Target[i] - Outputs[i]);
         Delta[i] = (1 - Outputs[i]) * Outputs[i] * Err; // partial derivative of the total error with respect to the net input of the neuron
-        Error += (0.5f * Err * Err) + (0.5f * Lambda * sumSquaredVals); // error with regularization
+        Error += (0.5f * Err * Err); // error
     }
 
     // hidden layer error
@@ -165,7 +165,7 @@ void NeuralNetwork::backpropagate(void) {
     // output layer
     for (i = 0; i < hiddenNum; i++) {
         for (j = 0; j < outputNum; j++) {
-            HiddenWeights[i][j] += LR * Delta[j] * Hidden[i] + Alpha * DWeights[j]; // backprop with momentum
+            HiddenWeights[i][j] += LR * ((Delta[j] * Hidden[i]) + (LambdaHO * Hidden[i])) + Alpha * DWeights[j]; // backprop with momentum
             DWeights[j] = LR * Delta[j] * Hidden[i];
         }
     }
@@ -173,7 +173,7 @@ void NeuralNetwork::backpropagate(void) {
     // hidden layer
     for (i = 0; i < inputNum; i++) {
         for (j = 0; j < hiddenNum; j++) {
-            InputWeights[i][j] += LR * HDelta[j] * Inputs[i] + Alpha * HDWeights[j];
+            InputWeights[i][j] += LR * ((HDelta[j] * Inputs[i]) + (LambdaIH * Inputs[i])) + Alpha * HDWeights[j];
             HDWeights[j] = LR * HDelta[j] * Inputs[i];
         }
     }
