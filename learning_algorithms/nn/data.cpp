@@ -5,7 +5,7 @@
 #include "data.h"
 
 data::data(int a, int b, std::string p) {
-    in = a;       //Numero de entradas de la red
+    inp = a;       //Numero de entradas de la red
     out = b;      //Numero de salidas de la red;
     file = p;
 }
@@ -49,7 +49,7 @@ void data::readFile(void) {
 }
 
 void data::getTrainingData(int n, double *p, double *s) { // fill containers with training data
-    for (int i = 0; i < in; i++) {
+    for (int i = 0; i < inp; i++) {
         p[i] = Inputs[i][n];
     }
     for (int i = 0; i < out; i++) {
