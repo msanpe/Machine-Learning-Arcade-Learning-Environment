@@ -18,6 +18,7 @@ std::string train;
 int m;
 bool activateDiscrete = false;   // varia entre discreto y continuo
 NeuralNetwork NN;
+data dataSet;
 
 
 void trainNet(void) {
@@ -42,7 +43,7 @@ void trainNet(void) {
     tmpIn = new double[NN.inputNum];
     tmpOut = new double[NN.outputNum];
 
-    data dataSet(NN.inputNum, NN.outputNum, train);
+    dataSet.setData(NN.inputNum, NN.outputNum, train);
     dataSet.readFile();
     trainSize = dataSet.setSize();
 
@@ -146,6 +147,7 @@ void useNet(void) {
     for (int i = 0; i < NN.outputNum; i++) {
         std::cout << convertDiscrete(NN.Outputs[i]) << std::endl;
     }
+    menu();
 }
 
 void loadNet() {
