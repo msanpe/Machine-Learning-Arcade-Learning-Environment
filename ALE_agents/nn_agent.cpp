@@ -95,7 +95,7 @@ void trainNet(void) {
   tmpIn = new double[NN.inputNum];
   tmpOut = new double[NN.outputNum];
 
-  dataSet.setData(NN.inputNum, NN.outputNum, path);
+  dataSet.setData(NN.inputNum, NN.outputNum, train);
   dataSet.readFile();
   trainSize = dataSet.setSize();
 
@@ -144,7 +144,7 @@ void trainNet(void) {
       localError = 0;
   }
   std::cout << "Training ended in " << i << " epochs" << std::endl;
-  NN.saveNet(const_cast<char *>("weights"));
+  NN.saveNet(const_cast<char *>(n.c_str()));
   std::cout << "Network weights saved in " << n << std::endl;
 }
 
@@ -296,6 +296,8 @@ void loadNet() {
     std::cin.width(31);
     std::cin >> f;
     NN.loadNet(const_cast<char *>(f.c_str()));  //Recupera la red del archivo dado
+    dataSet.setData(NN.inputNum, NN.outputNum, f.append("_data"));
+    dataSet.readFile();
     menu();
 }
 
