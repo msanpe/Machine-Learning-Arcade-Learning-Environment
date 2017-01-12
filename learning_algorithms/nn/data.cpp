@@ -4,7 +4,13 @@
 
 #include "data.h"
 
-data::data(int a, int b, std::string p) {
+data::data(){
+  inp = 0;       //Numero de entradas de la red
+  out = 0;      //Numero de salidas de la red;
+  file = "";
+}
+
+void data::setData(int a, int b, std::string p) {
     inp = a;       //Numero de entradas de la red
     out = b;      //Numero de salidas de la red;
     file = p;

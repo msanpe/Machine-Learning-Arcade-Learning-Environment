@@ -25,7 +25,8 @@ private:
     std::string file;
     void normalizeData();
 public:
-    data(int a, int b, std::string p);
+    data();
+    void setData(int a, int b, std::string p);
     ~data();
     void readFile(void);
     void getTrainingData(int n, double *p, double *s);

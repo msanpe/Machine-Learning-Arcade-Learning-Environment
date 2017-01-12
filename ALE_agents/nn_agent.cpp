@@ -17,6 +17,7 @@ const int maxSteps = 7500;
 char const * game_name;
 int game_id;
 int lastLives;
+data dataSet;
 float totalReward;
 ALEInterface alei;
 
@@ -71,81 +72,80 @@ void init(){
 }
 
 void trainNet(void) {
-    std::cout << "Number of inputs: " << std::endl;
-    std::cin >> inp;
-    std::cout << "Number of elements in hidden layer: " << std::endl;
-    std::cin >> hid;
-    std::cout << "Number of outputs: " << std::endl;
-    std::cin >> outp;
-    std::cout << "Training data file: " << std::endl;
-    std::cin.width(31);
-    std::cin >> train;
-    path.append(f);
-    path.append(".txt");
-    std::cout << "Filename to save net: " << std::endl;
-    std::cin.width(31);
-    std::cin >> n;
+  std::cout << "Number of inputs: " << std::endl;
+  std::cin >> inp;
+  std::cout << "Number of elements in hidden layer: " << std::endl;
+  std::cin >> hid;
+  std::cout << "Number of outputs: " << std::endl;
+  std::cin >> outp;
+  std::cout << "Training data file: " << std::endl;
+  std::cin >> train;
+  path.append(train);
+  path.append(".txt");
+  std::cout << "Filename to save net: " << std::endl;
+  std::cin.width (31);
+  std::cin >> n;
+  srand(time(NULL));
+
+  NN.inputNum = inp;
+  NN.outputNum = outp;
+  NN.hiddenNum = hid;
+  NN.targetNum = outp;
+  NN.createNet();
+  tmpIn = new double[NN.inputNum];
+  tmpOut = new double[NN.outputNum];
+
+  dataSet.setData(NN.inputNum, NN.outputNum, path);
+  dataSet.readFile();
+  trainSize = dataSet.setSize();
 
 
-    srand(time(NULL));
-    std::cout << path << std::endl;
-    NN.inputNum = inp;
-    NN.outputNum = outp;
-    NN.hiddenNum = hid;
-    NN.targetNum = outp;
-    NN.createNet();
-    tmpIn = new double[NN.inputNum];
-    tmpOut = new double[NN.outputNum];
+  NN.LR = 0.5f;      // learning rate
+  NN.Alpha = 0.1f;    // Momentum
+  NN.LambdaIH = 0;      // Regularization strength
+  NN.LambdaHO = 0;      // Regularization strength
+  meanSquaredError = 1000;        // para detener la red en el error deseado
 
-    data dataSet(NN.inputNum, NN.outputNum, train);
-    dataSet.readFile();
-    trainSize = dataSet.setSize();
+  // entrenamiento
+  for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
+      std::cout << "Epoch " << i << " ----> ";
+      if (i == 50000) {  // limite que evita loops infinitos
+          std::cout << "Training is taking too many epochs" << std::endl;
+          break;
+      }
+      //Pasa 1 a 1 los patrones de entrada y salida y entrena la red
+      for (int current = 0; current < trainSize; current++) {
+          dataSet.getTrainingData(current, tmpIn, tmpOut);
+          for (j = 0; j < NN.inputNum; j++) {
+              NN.Inputs[j] = tmpIn[j];
+          }
+          for (j = 0; j < NN.outputNum; j++) {
+              NN.Target[j] = tmpOut[j];
+          }
+          NN.trainNet();
+          NN.testNet();
+          /*for (j = 0; j < NN.inputNum; j++) {
+              std::cout << NN.Inputs[j] << " ";
+          }
+          std::cout << " ---> ";
+          for (j = 0; j < NN.outputNum; j++) {
+              std::cout << NN.Outputs[j] << " ";
+          }
+          std::cout << std::endl;*/
+          for (j = 0; j < NN.outputNum; j++) {
+              double delta = NN.Target[j] - NN.Outputs[j];
+              localError += delta * delta;
+          }
 
-
-    NN.LR = 0.5f;      // learning rate
-    NN.Alpha = 0.3f;    // Momentum
-    NN.LambdaIH = 0;      // Regularization strength
-    NN.LambdaHO = 0;      // Regularization strength
-    meanSquaredError = 1000;        // para detener la red en el error deseado
-
-    // entrenamiento
-    for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
-          std::cout << i << "-->" << meanSquaredError << std::endl;
-        if (i == 10000) {  // limite que evita loops infinitos
-            std::cout << "Training is taking too many epochs" << std::endl;
-            break;
-        }
-        //Pasa 1 a 1 los patrones de entrada y salida y entrena la red
-        for (int current = 0; current < trainSize; current++) {
-            dataSet.getTrainingData(current, tmpIn, tmpOut);
-            for (j = 0; j < NN.inputNum; j++) {
-                NN.Inputs[j] = tmpIn[j];
-            }
-            for (j = 0; j < NN.outputNum; j++) {
-                NN.Target[j] = tmpOut[j];
-            }
-            NN.testNet();
-            for (j = 0; j < NN.inputNum; j++) {
-              //  std::cout << NN.Inputs[j] << " ";
-            }
-            //std::cout << " ---> ";
-            for (j = 0; j < NN.outputNum; j++) {
-            //  std::cout << NN.Outputs[j] << " ";
-            }
-            //std::cout << std::endl;
-            for (j = 0; j < NN.outputNum; j++) {
-                double delta = NN.Target[j] - NN.Outputs[j];
-                localError += delta * delta;
-            }
-            NN.trainNet();
-        }
-        // epoch error calculation
-        meanSquaredError = localError/NN.outputNum;
-        localError = 0;
-    }
-    std::cout << "Training ended in " << i << " epochs" << std::endl;
-    NN.saveNet(const_cast<char *>(n.c_str()));
-    std::cout << "Network weights saved in " << n << std::endl;
+      }
+      // epoch error calculation
+      meanSquaredError = localError/NN.outputNum;
+      std::cout << " " << "Error: " << meanSquaredError << std::endl;
+      localError = 0;
+  }
+  std::cout << "Training ended in " << i << " epochs" << std::endl;
+  NN.saveNet(const_cast<char *>("weights"));
+  std::cout << "Network weights saved in " << n << std::endl;
 }
 
 
@@ -171,10 +171,12 @@ double convertDiscrete(double a) {
 }
 
 void useNet(void) {
+    float val;
     std::cout << "Ingresar los valores de entrada a la red:" << std::endl;
     for (i = 0; i < NN.inputNum; i++) {
         std::cout << "Input " << (i + 1) << std::endl;
-        std::cin >> NN.Inputs[i];
+        std::cin >> val;
+        NN.Inputs[i] = (val - dataSet.getMinVal()) / (dataSet.getMaxVal() - dataSet.getMinVal());
         std::cout << std::endl;
     }
     NN.testNet();
@@ -186,12 +188,19 @@ void useNet(void) {
 
 std::vector<float> testOnInstance(std::vector <float> input){
   std::vector<float> outputs;
+  float z_value;
+  int i;
+
+  for(i=0; i< input.size(); i++){
+    z_value = ((input[i] - dataSet.getMinVal()) / (dataSet.getMaxVal() - dataSet.getMinVal()));
+    input[i] = z_value;
+  }
 
   for (i = 0; i < NN.inputNum; i++) {
       NN.Inputs[i] = input[i];
   }
   NN.testNet();
-  for (int i = 0; i < NN.outputNum; i++) {
+  for (i = 0; i < NN.outputNum; i++) {
       outputs.push_back(convertDiscrete(NN.Outputs[i]));
   }
   return outputs;
@@ -199,6 +208,7 @@ std::vector<float> testOnInstance(std::vector <float> input){
 
 float agentStep() {
 
+  float z_value;
   float max = -1;
   int action;
   std::vector<float> outputs;
@@ -226,12 +236,16 @@ float agentStep() {
          break;
   }
 
+  for(int i=0; i<v_inputs.size(); i++){
+    z_value = ((v_inputs[i] - dataSet.getMinVal()) / (dataSet.getMaxVal() - dataSet.getMinVal()));
+    v_inputs[i] = z_value;
+  }
 
   outputs = testOnInstance(v_inputs);
 
   for(int i=0; i<outputs.size(); i++){
     if(outputs[i] == 1){
-      action = i;
+      action = i+3;
     }
   }
 
@@ -265,7 +279,10 @@ int menu(void) {
     std::cin >> m;
     std::cout << std::endl;
 
-    if (m == 1)      trainNet();
+    if (m == 1){
+      trainNet();
+      return 10;
+    }
     else if (m == 2) toggleDiscrete();
     else if (m == 3) useNet();
     else if (m == 4) useNetOnGame();
