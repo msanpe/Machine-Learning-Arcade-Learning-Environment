@@ -19,20 +19,19 @@ int m;
 bool activateDiscrete = false;   // varia entre discreto y continuo
 NeuralNetwork NN;
 
-using namespace std;
 
 void trainNet(void) {
-    cout << "Number of inputs: " << endl;
-    cin >> inp;
-    cout << "Number of elements in hidden layer: " << endl;
-    cin >> hid;
-    cout << "Number of outputs: " << endl;
-    cin >> outp;
-    cout << "Training data file: " << endl;
-    cin >> train;
-    cout << "Filename to save net: " << endl;
-    cin.width (31);
-    cin >> n;
+    std::cout << "Number of inputs: " << std::endl;
+    std::cin >> inp;
+    std::cout << "Number of elements in hidden layer: " << std::endl;
+    std::cin >> hid;
+    std::cout << "Number of outputs: " << std::endl;
+    std::cin >> outp;
+    std::cout << "Training data file: " << std::endl;
+    std::cin >> train;
+    std::cout << "Filename to save net: " << std::endl;
+    std::cin.width (31);
+    std::cin >> n;
     srand(time(NULL));
 
     NN.inputNum = inp;
@@ -56,9 +55,9 @@ void trainNet(void) {
 
     // entrenamiento
     for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
-        cout << "Epoch " << i << " ----> ";
+        std::cout << "Epoch " << i << " ----> ";
         if (i == 500000) {  // limite que evita loops infinitos
-            //cout << "Training is taking too many epochs" << endl;
+            //std::cout << "Training is taking too many epochs" << std::endl;
             //break;
         }
         //Pasa 1 a 1 los patrones de entrada y salida y entrena la red
@@ -73,13 +72,13 @@ void trainNet(void) {
             NN.trainNet();
             NN.testNet();
             /*for (j = 0; j < NN.inputNum; j++) {
-                cout << NN.Inputs[j] << " ";
+                std::cout << NN.Inputs[j] << " ";
             }
-            cout << " ---> ";
+            std::cout << " ---> ";
             for (j = 0; j < NN.outputNum; j++) {
-                cout << NN.Outputs[j] << " ";
+                std::cout << NN.Outputs[j] << " ";
             }
-            cout << endl;*/
+            std::cout << std::endl;*/
             for (j = 0; j < NN.outputNum; j++) {
                 double delta = NN.Target[j] - NN.Outputs[j];
                 localError += delta * delta;
@@ -88,25 +87,25 @@ void trainNet(void) {
         }
         // epoch error calculation
         meanSquaredError = localError/NN.outputNum;
-        cout << " " << "Error: " << meanSquaredError << endl;
+        std::cout << " " << "Error: " << meanSquaredError << std::endl;
         localError = 0;
     }
-    cout << "Training ended in " << i << " epochs" << endl;
+    std::cout << "Training ended in " << i << " epochs" << std::endl;
     NN.saveNet(n);
-    cout << "Network weights saved in " << n << endl;
+    std::cout << "Network weights saved in " << n << std::endl;
 }
 
 
 int menu(void) {
-    cout << endl;
-    cout << "Menu" << endl;
-    cout << "1. Train new network" << endl;
-    cout << "2. Switch between continuos and discrete outputs" << endl;
-    cout << "3. Test network" << endl;
-    cout << "4. Load network" << endl;
-    cout << "5. Exit" << endl;
-    cin >> m;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << "Menu" << std::endl;
+    std::cout << "1. Train new network" << std::endl;
+    std::cout << "2. Switch between continuos and discrete outputs" << std::endl;
+    std::cout << "3. Test network" << std::endl;
+    std::cout << "4. Load network" << std::endl;
+    std::cout << "5. Exit" << std::endl;
+    std::cin >> m;
+    std::cout << std::endl;
 
     if (m == 1)      trainNet();
     else if (m == 2) toggleDiscrete();
@@ -120,10 +119,10 @@ int menu(void) {
 void toggleDiscrete(void) {
     if (activateDiscrete == false) {
         activateDiscrete = true;
-        cout << "Discrete data activated" << endl;
+        std::cout << "Discrete data activated" << std::endl;
     } else {
         activateDiscrete = false;
-        cout << "Discrete data deactivated" << endl;
+        std::cout << "Discrete data deactivated" << std::endl;
     }
 }
 
@@ -136,24 +135,23 @@ double convertDiscrete(double a) {
 }
 
 void useNet(void) {
-    cout << "Ingresar los valores de entrada a la red:" << endl;
+    std::cout << "Ingresar los valores de entrada a la red:" << std::endl;
     for (i = 0; i < NN.inputNum; i++) {
-        cout << "Input " << (i + 1) << endl;
-        cin >> NN.Inputs[i];
-        cout << endl;
+        std::cout << "Input " << (i + 1) << std::endl;
+        std::cin >> NN.Inputs[i];
+        std::cout << std::endl;
     }
     NN.testNet();
-    cout << "Output:" << endl;
+    std::cout << "Output:" << std::endl;
     for (int i = 0; i < NN.outputNum; i++) {
-        cout << convertDiscrete(NN.Outputs[i]) << endl;
+        std::cout << convertDiscrete(NN.Outputs[i]) << std::endl;
     }
 }
 
 void loadNet() {
-    NeuralNetwork NN;
-    cout << "Insert weights file: " << endl;
-    cin.width(31);
-    cin >> f;
+    std::cout << "Insert weights file: " << std::endl;
+    std::cin.width(31);
+    std::cin >> f;
     NN.loadNet(f);  //Recupera la red del archivo dado
     useNet();
 }
