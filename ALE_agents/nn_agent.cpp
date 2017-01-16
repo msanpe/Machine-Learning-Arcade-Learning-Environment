@@ -95,7 +95,7 @@ void trainNet(void) {
   tmpIn = new double[NN.inputNum];
   tmpOut = new double[NN.outputNum];
 
-  dataSet.setData(NN.inputNum, NN.outputNum, train);
+  dataSet.setData(NN.inputNum, NN.outputNum, path);
   dataSet.readFile();
   trainSize = dataSet.setSize();
 
@@ -109,7 +109,7 @@ void trainNet(void) {
   // entrenamiento
   for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
       std::cout << "Epoch " << i << " ----> ";
-      if (i == 50000) {  // limite que evita loops infinitos
+      if (i == 10000) {  // limite que evita loops infinitos
           std::cout << "Training is taking too many epochs" << std::endl;
           break;
       }
@@ -226,11 +226,13 @@ float agentStep() {
 
   switch(game_id){
     case TENNIS_ID:
-         addTennisData(v_inputs, alei);
+         addTennisInputData(v_inputs, alei);
          break;
     case FREEWAY_ID:
-         addFreewayData(v_inputs, alei);
+         addFreewayInputData(v_inputs, alei);
          break;
+
+
     default:
          v_inputs.push_back(0);
          break;

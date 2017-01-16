@@ -64,7 +64,7 @@ float getFreeWayCalle(int param, ALEInterface &alei){
    return valor;
 }
 
-void addTennisData(std::vector<float> & v_inputs, ALEInterface &alei)
+void addTennisInputData(std::vector<float> & v_inputs, ALEInterface &alei)
 {
 
   v_inputs.push_back(getTennisPlayerX(alei));
@@ -73,7 +73,7 @@ void addTennisData(std::vector<float> & v_inputs, ALEInterface &alei)
 
 }
 
-void addFreewayData(std::vector<float> & v_inputs, ALEInterface &alei)
+void addFreewayInputData(std::vector<float> & v_inputs, ALEInterface &alei)
 {
   for(int  i =0; i<10; i++){
     v_inputs.push_back(getFreeWayCalle(i, alei));

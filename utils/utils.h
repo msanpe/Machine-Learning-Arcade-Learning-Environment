@@ -14,8 +14,8 @@ int getTennisBallY(ALEInterface &alei);
 int getTennisBallZ(ALEInterface &alei);
 
 float getFreeWayCalle(int param, ALEInterface &alei);
-void addTennisData(std::vector<float> & v_inputs, ALEInterface &alei);
-void addFreewayData(std::vector<float> & v_inputs, ALEInterface &alei);
+void addTennisInputData(std::vector<float> & v_inputs, ALEInterface &alei);
+void addFreewayInputData(std::vector<float> & v_inputs, ALEInterface &alei);
 float max(float n1, float n2);
 int parseArgs(int argc, char **argv, std::string  &path);
 void usage(char* pname);

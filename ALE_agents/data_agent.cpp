@@ -341,7 +341,7 @@ int doAction(char c, float &reward){
   return PLAYER_A_NOOP;
 }
 
-void addTennisData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
+void addTennisCrudeData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
 {
   v_inputs.push_back(getTennisPlayerX());
   v_inputs.push_back(getTennisBallY());
@@ -362,7 +362,7 @@ void addTennisData(std::vector<float> & v_inputs, std::vector<float> & v_outputs
   }
 }
 
-void addFreewayData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
+void addFreewayCrudeData(std::vector<float> & v_inputs, std::vector<float> & v_outputs, int action_typo)
 {
 
   for(int  i =0; i<10; i++){
@@ -427,12 +427,12 @@ float agentStep() {
 
    switch(game_id){
      case TENNIS_ID:
-          addTennisData(v_inputs, v_outputs, action_typo);
+          addTennisCrudeData(v_inputs, v_outputs, action_typo);
           //v_outputs.push_back(action_typo);
           break;
      case FREEWAY_ID:
 
-          addFreewayData(v_inputs, v_outputs, action_typo);
+          addFreewayCrudeData(v_inputs, v_outputs, action_typo);
           //v_outputs.push_back(action_typo);
           break;
      default:
