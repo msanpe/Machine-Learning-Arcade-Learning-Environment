@@ -24,9 +24,9 @@ public:
     void saveNet(char *p);
     void loadNet(char *p);
     void loadBot(int input, int hidden, int out, double alfa, double learnR,
-                                std::vector<double> OBias, std::vector<double> HBias,
-                                std::vector<double> InputWeights, std::vector<double> HiddenWeights,
-                                std::vector<double> DWeights, std::vector<double> HDWeights);
+                                double *OBi, double *HBi,
+                                double *inputW, double *hiddenW,
+                                double *DWeigH, double *HDWeigh);
 
     double *Inputs;
     double *Outputs;

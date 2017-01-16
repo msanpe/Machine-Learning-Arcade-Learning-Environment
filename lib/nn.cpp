@@ -357,10 +357,10 @@ void NeuralNetwork::loadBot(int input, int hidden, int out, double alfa, double 
                             double *DWeigH, double *HDWeigh) {
 
   inputNum = input;
-  hiddenNum = hiden;
+  hiddenNum = hidden;
   outputNum = out;
   targetNum = out;
-  alpha = alfa;
+  Alpha = alfa;
   learnR = LR;
   int i, j, k;
   k = 0;
