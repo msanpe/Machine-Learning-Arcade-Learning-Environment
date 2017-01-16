@@ -41,6 +41,9 @@ log:	src/log_agent.cpp $(LR_OBJ) $(U_OBJ)
 net:	src/nn_agent.cpp $(NN_OBJ) $(U_OBJ)
 	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/nn_agent.cpp $(NN_OBJ) $(U_OBJ) -o nn_agent $(ALE)
 
+netbot: src/nn_bot.cpp $(NN_OBJ) $(U_OBJ)
+	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/nn_bot.cpp $(NN_OBJ) $(U_OBJ) -o nn_bot $(ALE)
+
 data:	src/data_agent.cpp
 	$(CC) $(OPTIONS) $(DEBUG) src/data_agent.cpp -o data_agent $(ALE) $(NCURSES)
 
