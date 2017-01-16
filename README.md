@@ -123,11 +123,18 @@ Dispone de parada por época
 # Perceptron Unicapa
 ## Implementación y Características:
 
+**Estructura de codigo**
+El perceptron implementado consta de un único archivo perceptron.cpp. Desde este fichero se cargan los datos y se realizan los cálculos según los parámetros introducidos para alpha y las épocas.
+
+**Formato fichero de datos:**
+
+Mismo formato que para la red neuronal
+
 # Regresion Lineal
 ## Implementación y Características:
 
 **Estructura de codigo**
-La regresión lineal implementada consta de un único archivo linearregression.cpp. Desde este fichero se cargan los datos y se realizan los calculos según los parámetros introducidos para alpha y las épocas.
+La regresión lineal implementada consta de un único archivo linearregression.cpp. Desde este fichero se cargan los datos y se realizan los cálculos según los parámetros introducidos para alpha y las épocas.
 
 **Formato fichero de datos:**
 
