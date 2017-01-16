@@ -17,6 +17,16 @@ float totalReward;
 ALEInterface alei;
 LogisticRegression logistic;
 
+
+int input_size = 3;
+int output_size = 2;
+float data_min = 8;
+float data_max = 142;
+float arr[2][4] = {
+                                {-15.2762,17.0575,-0.448558,-2.23137},
+                                {12.8465,-16.9949,1.43864,0.192643}
+                               };
+
 int doAction(int action,  float &reward){
 
   if(action == PLAYER_A_LEFT){
@@ -106,26 +116,21 @@ void init(){
 
 void play(){
 
-  float arr[2][4] = {
-                                  {-15.2762,17.0575,-0.448558,-2.23137},
-                                  {12.8465,-16.9949,1.43864,0.192643}
-                                 };
-
   std::vector< std::vector<float> > biases;
 
-  for(int i=0; i<2; i++){
+  for(int i=0; i<output_size; i++){
     std::vector<float> v;
-    for(int j = 0; j<4; j++){
+    for(int j = 0; j<input_size + 1; j++){
       v.push_back(arr[i][j]);
     }
     biases.push_back(v);
   }
 
 
-  logistic.setInputSize(3);
-  logistic.setOutputSize(2);
+  logistic.setInputSize(input_size);
+  logistic.setOutputSize(output_size);
 
-  logistic.setBotInfo(8, 142, biases);
+  logistic.setBotInfo(data_min, data_max, biases);
 
   init();
 

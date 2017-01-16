@@ -17,6 +17,9 @@ float totalReward;
 ALEInterface alei;
 NeuralNetwork NN;
 
+
+float data_min = 8;
+float data_max = 142;
 int input = 3;
 int hidden = 10;
 int out = 2;
@@ -49,21 +52,79 @@ int doAction(int action,  float &reward){
     return PLAYER_A_UP;
   }else if(action == PLAYER_A_DOWN){
     reward += alei.act(PLAYER_A_DOWN);
-    return PLAYER_A_DOWN;
-  }
-  else{
-    reward += alei.act(PLAYER_A_NOOP);
+    return += alei.act(PLAYER_A_NOOP);
     return PLAYER_A_NOOP;
   }
 
   return PLAYER_A_NOOP;
 }
 
+std::vector<float> testOnInstance(std::vector <float> input){
+  std::vector<float> outputs;
+  float z_value;
+  int i;
+
+  for (i = 0; i < NN.inputNum; i++) {
+      NN.Inputs[i] = input[i];
+  }
+  NN.testNet();
+  for (i = 0; i < NN.outputNum; i++) {
+      outputs.push_back(convertDiscrete(NN.Outputs[i]));
+  }
+  return outputs;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 /// Do Next Agent Step
 ///////////////////////////////////////////////////////////////////////////////
 float agentStep() {
-  return 0.0;
+    float z_value;
+    float max = -1;
+    int action;
+    std::vector<float> outputs;
+
+
+    if (alei.lives() != lastLives) {
+       --lastLives;
+       alei.act(PLAYER_A_FIRE);
+    }
+
+
+    std::vector<float> v_inputs;
+
+    float reward = 0;
+
+    switch(game_id){
+      case TENNIS_ID:
+           addTennisInputData(v_inputs, alei);
+           break;
+      case FREEWAY_ID:
+           addFreewayInputData(v_inputs, alei);
+           break;
+
+
+      default:
+           v_inputs.push_back(0);
+           break;
+    }
+
+    for(int i=0; i<v_inputs.size(); i++){
+      z_value = ((v_inputs[i] - data_min) / (data_max - data_min ));
+      v_inputs[i] = z_value;
+    }
+
+    outputs = testOnInstance(v_inputs);
+
+    for(int i=0; i<outputs.size(); i++){
+      if(outputs[i] == 1){
+        action = i+3;
+      }
+    }
+
+    doAction(action, reward);
+
+    return reward;
 }
 
 void botInit() {
@@ -88,6 +149,15 @@ void init(){
 
 void play(){
 
+  init();
+
+  int step;
+
+  for (step = 0; !alei.game_over() && step < maxSteps; ++step)
+  {
+     alei.act(PLAYER_A_FIRE);
+     totalReward += agentStep();
+  }
 
 }
 

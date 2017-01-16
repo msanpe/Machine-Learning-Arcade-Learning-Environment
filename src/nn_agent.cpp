@@ -191,11 +191,6 @@ std::vector<float> testOnInstance(std::vector <float> input){
   float z_value;
   int i;
 
-  for(i=0; i< input.size(); i++){
-    z_value = ((input[i] - dataSet.getMinVal()) / (dataSet.getMaxVal() - dataSet.getMinVal()));
-    input[i] = z_value;
-  }
-
   for (i = 0; i < NN.inputNum; i++) {
       NN.Inputs[i] = input[i];
   }
