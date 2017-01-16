@@ -126,6 +126,12 @@ Dispone de parada por época
 # Regresion Lineal
 ## Implementación y Características:
 
+**Estructura de codigo**
+La regresión lineal implementada consta de un único archivo linearregression.cpp. Desde este fichero se cargan los datos y se realizan los calculos según los parámetros introducidos para alpha y las épocas.
+
+**Formato fichero de datos:**
+
+Mismo formato que para la red neuronal
 
 
 # ----------------AGENTES---------------
