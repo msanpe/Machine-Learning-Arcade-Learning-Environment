@@ -42,22 +42,16 @@ La regularización L2 ayuda a mitigar los picos en los vectores de pesos.
 El fichero de datos esta formateado de la siguiente manera:
 
     Numero de datos de entrenamiento
-    Entrada11 Entrada12 Entrada1N
-    Salida11 Salida12 Salida1N
-    Entrada21 Entrada22 Entrada2N
-    Salida21 Salida22 Salida2N
+    Entrada11,Entrada12,Entrada1N,Salida11,Salida12,Salida1N
+    Entrada21,Entrada22,Entrada2N,Salida21,Salida22,Salida2N
     
 Ejemplo de fichero para puerta XOR:
 
     4
-    0 0
-    1
-    0 1
-    0
-    1 0
-    0
-    1 1
-    1 
+    0,0,1
+    0,1,0
+    1,0,0
+    1,1,1 
 **Ajuste de hiperparámetros:**
 
 Los hiperparámetros de los que dispone la red son(Learning Rate, Momentum y Regularization Strength)
