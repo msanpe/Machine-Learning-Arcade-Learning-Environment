@@ -18,11 +18,11 @@ Clonamos el repositorio robobit-ml dentro de la carpeta Arcade-Learning-Enviorme
 Una vez hecho eso entramos en la carpeta robobit-ml y creamos el directorio obj.
 A partir de ahi usamos el comando make para construir el objeto que deseemos.
 
-cd <Ruta hasta la carpeta>/Arcade-Learning-Enviorment
-git clone <robobithttp>
-cd robobit-ml
-mkdir obj
-make <target> (consultar el makefile para obtener mas información)
+	cd <Ruta hasta la carpeta>/Arcade-Learning-Enviorment
+	git clone <robobithttp>
+	cd robobit-ml
+	mkdir obj
+	make <target> (consultar el makefile para obtener mas información)
 
 
 # -------------ALGORITMOS--------------
