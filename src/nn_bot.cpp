@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include "../include/nn.h"
+#include "../include/data.h"
 #include "../include/utils.h"
 
 #define NONE_ID 0
@@ -16,7 +17,7 @@ int lastLives;
 float totalReward;
 ALEInterface alei;
 NeuralNetwork NN;
-
+bool activateDiscrete = true;   // varia entre discreto y continuo
 
 float data_min = 8;
 float data_max = 142;
@@ -52,11 +53,18 @@ int doAction(int action,  float &reward){
     return PLAYER_A_UP;
   }else if(action == PLAYER_A_DOWN){
     reward += alei.act(PLAYER_A_DOWN);
-    return += alei.act(PLAYER_A_NOOP);
     return PLAYER_A_NOOP;
   }
 
   return PLAYER_A_NOOP;
+}
+
+// convierte de continuo a discreto
+double convertDiscrete(double a) {
+    if (activateDiscrete == true) {
+        if (a < 0.5) return 0;
+        if (a >= 0.5) return 1;
+    } else return a;
 }
 
 std::vector<float> testOnInstance(std::vector <float> input){

@@ -30,7 +30,7 @@ int inp, hid, outp;    // layer sizes
 std::string f, n, train;     // file names
 int m;
 int c = 0; // control del main loop
-bool activateDiscrete = false;   // varia entre discreto y continuo
+bool activateDiscrete = true;   // varia entre discreto y continuo
 NeuralNetwork NN;
 
 int doAction(int action,  float &reward){

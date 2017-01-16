@@ -8,7 +8,7 @@ DEBUG= #-D DEBUG
 LIBDIR=lib
 OBJDIR=obj
 INCLUDEDIR=include
-AGENTS=nn_agent log_agent data_agent
+AGENTS=nn_agent log_agent data_agent log_bot nn_bot
 
 
 #Objects
@@ -31,6 +31,8 @@ all: 	src/log_agent.cpp src/nn_agent.cpp $(LR_OBJ) $(U_OBJ) $(NN_OBJ)
 	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/log_agent.cpp $(LR_OBJ) $(U_OBJ) -o log_agent $(ALE)
 	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/nn_agent.cpp $(NN_OBJ) $(U_OBJ) -o nn_agent $(ALE)
 	$(CC) $(OPTIONS) $(DEBUG) src/data_agent.cpp -o data_agent $(ALE) $(NCURSES)
+	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/nn_bot.cpp $(NN_OBJ) $(U_OBJ) -o nn_bot $(ALE)
+	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/log_bot.cpp $(LR_OBJ) $(U_OBJ) -o log_bot $(ALE)
 
 logbot: src/log_bot.cpp $(LR_OBJ) $(U_OBJ)
 	$(CC) $(OPTIONS) $(DEBUG) -I$(INCLUDEDIR) src/log_bot.cpp $(LR_OBJ) $(U_OBJ) -o log_bot $(ALE)
