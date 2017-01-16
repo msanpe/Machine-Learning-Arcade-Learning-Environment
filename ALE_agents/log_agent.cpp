@@ -64,11 +64,11 @@ float agentStep() {
     case TENNIS_ID:
 
 
-         addTennisData(v_inputs, alei);
+         addTennisInputData(v_inputs, alei);
 
          break;
     case FREEWAY_ID:
-         addFreewayData(v_inputs, alei);
+         addFreewayInputData(v_inputs, alei);
          break;
     default:
          v_inputs.push_back(0);
