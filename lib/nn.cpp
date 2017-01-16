@@ -352,14 +352,16 @@ void NeuralNetwork::loadNet(char *p) {
 }
 
 void NeuralNetwork::loadBot(int input, int hidden, int out, double alfa, double learnR,
-                            double *OBi, double *HBi,
-                            double *inputW, double *hiddenW,
-                            double *DWeigH, double *HDWeigh) {
+                            double OBi[], double HBi[],
+                            double inputW[], double hiddenW[],
+                            double DWeigH[], double HDWeigh[]) {
 
   inputNum = input;
   hiddenNum = hidden;
   outputNum = out;
   targetNum = out;
+  createNet();
+
   Alpha = alfa;
   learnR = LR;
   int i, j, k;
@@ -368,8 +370,10 @@ void NeuralNetwork::loadBot(int input, int hidden, int out, double alfa, double 
   for (i = 0; i < outputNum; i++) {
       OBias[i] = OBi[i];
   }
+
   for (i = 0; i < hiddenNum; i++) {
       HBias[i] = HBi[i];
+
   }
 
   for (i = 0; i < inputNum; i++) {

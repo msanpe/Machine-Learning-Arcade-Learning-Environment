@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include <iostream>
 
 class NeuralNetwork {
 public:
@@ -24,9 +25,9 @@ public:
     void saveNet(char *p);
     void loadNet(char *p);
     void loadBot(int input, int hidden, int out, double alfa, double learnR,
-                                double *OBi, double *HBi,
-                                double *inputW, double *hiddenW,
-                                double *DWeigH, double *HDWeigh);
+                                double OBi[], double HBi[],
+                                double inputW[], double hiddenW[],
+                                double DWeigH[], double HDWeigh[]);
 
     double *Inputs;
     double *Outputs;
