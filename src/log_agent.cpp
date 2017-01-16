@@ -8,6 +8,7 @@
 #define FREEWAY_ID 2
 
 // Global vars
+std::string sfilename;
 std::string path="datos/";
 const int maxSteps = 7500;
 char const * game_name;
@@ -99,6 +100,8 @@ void toggleDiscrete(void) {
 
 void trainLogReg(){
 
+  std::ofstream save_file;
+
   int n1, n2;
   int epochs = 10;
   std::string filename;
@@ -112,6 +115,10 @@ void trainLogReg(){
   std::cout << "Numero de saldas:" << std::endl;
   //n2 = 2;
   std::cin >> n2;
+
+  std::cout << "Introduce el nombre del fichero para salvar los bias" << std::endl;
+  //filename = "datos_tennis_bueno";
+  std::cin >> sfilename;
 
   path.append(filename);
   path.append(".txt");
@@ -127,6 +134,14 @@ void trainLogReg(){
   }
 
   std::cout << "BIAS FINALES: " << logistic.getStringBias() << std::endl;
+  save_file.open(sfilename.c_str(), std::ios::out | std::ios::trunc);
+  if(save_file.is_open()){
+    save_file << n1 << std::endl;
+    save_file << n2 << std::endl;
+    save_file << logistic.getMinFromData() << std::endl;
+    save_file << logistic.getMaxFromData() << std::endl;
+    save_file << logistic.getStringBias();
+  }
   std::cout << "Regresion entrenada OK" << std::endl;
 }
 
@@ -167,6 +182,13 @@ void useLogReg(void) {
     }
 }
 
+void loadLogReg(){
+    std::string filename;
+    std::cout << "Ingresa el nombre del fichero de bias:" << std::endl;
+    std::cin >> filename;
+    logistic.loadBiases(filename);
+    std::cout << logistic.getStringBias() << std::endl;
+}
 
 void testLogReg(){
 
@@ -193,7 +215,8 @@ int menu(){
   std::cout << "2. Toggle Discrete" << std::endl;
   std::cout << "3. Test on game" << std::endl;
   std::cout << "4. Test on single instance" << std::endl;
-  std::cout << "5. Exit" << std::endl;
+  std::cout << "5. Load BIAS file" << std::endl;
+  std::cout << "6. Exit" << std::endl;
   std::cin >> m;
   std::cout << std::endl;
 
@@ -211,6 +234,9 @@ int menu(){
       useLogReg();
       break;
     case 5:
+      loadLogReg();
+      break;
+    case 6:
       return 1;
     default:
       return 0;

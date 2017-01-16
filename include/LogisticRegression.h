@@ -14,6 +14,7 @@ class LogisticRegression{
     int output_tuple_tam;
     int NUM_INSTANCES;
     bool discrete;
+    bool trained;
 
     std::vector< std::vector<float> > inputs;
     std::vector< std::vector<float> > outputs;
@@ -50,7 +51,9 @@ class LogisticRegression{
 
     void setInputSize(int tam);
     void setOutputSize(int tam);
+    void setBotInfo(float min, float max, std::vector< std::vector<float> > &biases);
 
+    void loadBiases(std::string filename);
     bool toggleDiscrete();
     void normalizeData();
     void normalizeInstance(std::vector <float> &input);

@@ -14,7 +14,8 @@ LogisticRegression::LogisticRegression(){
   NUM_INSTANCES = 0;
   data_min = kMAX_FLOAT;
   data_max = -kMAX_FLOAT;
-  discrete = false;
+  discrete = true;
+  trained = false;
 }
 
 LogisticRegression::LogisticRegression(std::string filename){
@@ -23,7 +24,8 @@ LogisticRegression::LogisticRegression(std::string filename){
   NUM_INSTANCES = 0;
   data_min = kMAX_FLOAT;
   data_max = -kMAX_FLOAT;
-  discrete = false;
+  discrete = true;
+  trained = false;
   openFile(filename);
 }
 
@@ -125,6 +127,12 @@ void LogisticRegression::setOutputSize(int tam){
   output_tuple_tam = tam;
 }
 
+void LogisticRegression::setBotInfo(float min, float max, std::vector< std::vector<float> > &biases){
+  data_min = min;
+  data_max = max;
+  bias = biases;
+}
+
 float LogisticRegression::calculatePrediction(float output)
 {
   return iden / (iden + exp(-output));
@@ -141,6 +149,49 @@ void LogisticRegression::recalculateBias(int input_index, int output_index, floa
       }
     }
 
+}
+
+void LogisticRegression::loadBiases(std::string filename){
+  std::ifstream bias_file;
+  std::string line;
+  std::vector<float> v;
+  std::vector<std::string> tokens;
+  int cont = 0;
+
+  bias_file.open(filename.c_str(), std::ifstream::in);
+
+  if(bias_file.is_open()){
+    while (std::getline(bias_file, line))
+    {
+        const std::string s = line;
+        if(cont == 0){
+          setInputSize(atoi(line.c_str()));
+        }else if(cont == 1){
+          setOutputSize(atoi(line.c_str()));
+        }else if(cont == 2){
+          data_min = (atof(line.c_str()));
+        }else if(cont == 3){
+          data_max = (atof(line.c_str()));
+        }else{
+          tokens = parseLine(s, ';');
+          if(!trained){
+            v.clear();
+
+            for(int i=0; i<tokens.size(); i++){
+              v.push_back((float)atof(tokens[i].c_str()));
+            }
+            bias.push_back(v);
+          }else{
+            for(int i=0; i<tokens.size(); i++){
+              bias[cont-2][i] = (float)atof(tokens[i].c_str());
+            }
+          }
+        }
+        cont++;
+    }
+  }else{
+    std::cout << "error al cargar el archivo" << std::endl;
+  }
 }
 
 bool LogisticRegression::toggleDiscrete(){
@@ -201,7 +252,7 @@ std::string LogisticRegression::getStringBias(){
 
   for(int i =0; i<output_tuple_tam; i++){
     for(int j=0; j<=input_tuple_tam; j++){
-      ss << "Bias (" << i << "," << j << "): " << bias[i][j] << " |-| ";
+      ss << bias[i][j] << ";";
     }
     ss << "\n";
   }
@@ -224,6 +275,8 @@ int LogisticRegression::trainModel(){
       recalculateBias(i, j, p);
     }
   }
+  trained = true;
+
   return 0;
 }
 
@@ -235,7 +288,6 @@ void LogisticRegression::normalizeInstance(std::vector <float> &input){
       z_value = ((input[i] - getMinFromData()) / (getMaxFromData() - getMinFromData()));
       input[i] = z_value;
     }
-
 }
 
 void LogisticRegression::normalizeData(){
@@ -248,8 +300,6 @@ void LogisticRegression::normalizeData(){
     }
   }
 
-  std::cout << getMinFromData() << std::endl;
-  std::cout << getMaxFromData() << std::endl;
   std::cout << "Data normalized" << std::endl;
 }
 
