@@ -73,15 +73,7 @@ todos ellos pueden ser modificados desde el codigo de funciones.cpp
 
 Actualmente la red esta programada para que se ejecute hasta reducir su error a un valor específico.
 Tambien se puede entrenar por número de epocas si se prefiere
-
-
-## Para usarla de forma standalone sin ALE
-**Compilación:**
-
-    g++ main.cpp functions.cpp data.cpp nn.cpp -o net
-**Ejecución:**
-    
-    ./net   
+  
 **Uso:**
     
     Una vez ejecutada, se mostrará en pantalla un menu con diversas opciones
