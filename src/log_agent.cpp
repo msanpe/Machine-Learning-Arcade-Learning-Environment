@@ -104,14 +104,14 @@ void trainLogReg(){
   std::string filename;
 
   std::cout << "Introduce el nombre del fichero (archivo txt sin extension)" << std::endl;
-  filename = "datos_tennis_bueno";
-  //std::cin >> filename;
+  //filename = "datos_tennis_bueno";
+  std::cin >> filename;
   std::cout << "Numero de entradas:" << std::endl;
-  n1 = 3;
-  //std::cin >> n1;
+  //n1 = 3;
+  std::cin >> n1;
   std::cout << "Numero de saldas:" << std::endl;
-  n2 = 2;
-  //std::cin >> n2;
+  //n2 = 2;
+  std::cin >> n2;
 
   path.append(filename);
   path.append(".txt");
