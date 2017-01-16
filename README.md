@@ -4,16 +4,28 @@ Robobit team ML Project
 
 # Instrucciones:
 ## Compilación para Debian/Ubuntu 64 bits:#
+Requisitos previos:
+Los requisitos previos caracteristicos del ALE mas la libreria ncurses. 
+
 Para compilar:
-LIBRARY_PATH="." g++ agent.cpp -o ./agent -lale -lncurses
-Usamos LIBRARY_PATH="." para que se utilice la libreria *libale.so* que hay en el path. 
-La libreria *libale.so* es una libreria dinámica que permite lanzar el emulador Stela.
 
-## Ejecución:
-Para ejecutar un juego:
-LD_LIBRARY_PATH="." ./agent roms/nombre_del_juego.bin
+Para realizar la compilación y ejecucion, será necesario añadir las siguientes variables de entorno:
+
+LIBRARY_PATH="<Ruta hasta la carpeta>/Arcade-Learning-Enviorment/."
+LD_LIBRARY_PATH="<Ruta hasta la carpeta>/Arcade-Learning-Enviorment/."
+
+Clonamos el repositorio robobit-ml dentro de la carpeta Arcade-Learning-Enviorment.
+Una vez hecho eso entramos en la carpeta robobit-ml y creamos el directorio obj.
+A partir de ahi usamos el comando make para construir el objeto que deseemos.
+
+cd <Ruta hasta la carpeta>/Arcade-Learning-Enviorment
+git clone <robobithttp>
+cd robobit-ml
+mkdir obj
+make <target> (consultar el makefile para obtener mas información)
 
 
+# -------------ALGORITMOS--------------
 # Red Neuronal
 ## Implementación y Características:
 
@@ -88,3 +100,97 @@ Tambien se puede entrenar por número de epocas si se prefiere
     Para cargar una red ya entrenada usaremos la opción 4.
     
     La opción 2 sirve para cambiar entre salidas discretas (1 o 0) y continuas (0,98764).
+
+# Regresión Logistica
+## Implementación y Características:
+
+**Estructura de codigo**
+
+La clase LogisticRegression provee todas las funcionalidades para la carga desde fichero, el entrenamiento del algoritmo, y el salvado a fichero de los pesos del algoritmo. Ademas el archivo hace uso de una clase de apoyo para todo el proyecto llamada Utils y donde se encuentran funcionalidades para calcular maximos, convertir string en vectores de float y en general todas las funciones de apoyo para el codigo. 
+
+**Formato fichero de datos:**
+
+Mismo formato que para la red neuronal
+
+**Ajuste de hiperparámetros:**
+
+El algoritmo solo dispone de Learning Rate y se puede ajustar en el fichero de LogisticRegression.cpp, al principio donde se inicializan las constantes. 
+
+**Opciones de entrenamiento:**
+
+Dispone de parada por época
+
+# Perceptron Unicapa
+## Implementación y Características:
+
+# Regresion Lineal
+## Implementación y Características:
+
+
+
+# ----------------AGENTES---------------
+## Implementación y Características:
+Nuestro proyecto disponde de un agente para cada algoritmo implementado que actua como interfaz para realizar entrenamientos y crear ficheros con los parametros del entrenamiento. Los agentes reciben por parametro en tiempo de ejecucion el nombre del juego y adaptan los tamaños de tupla al juego deseado.  Ademas, disponemos de un agente minador de datos (data_agent).
+
+#Data_Agent
+
+data_agent.cpp se encarga de elaborar los conjuntos de datos para posteriores entrenamientos del algoritmo y tambien para realizar ingenieria inversa sobre la RAM y adivinar los puntos de interes de cada juego. Este programa hace uso de la libreria ncurses para poder ejecutar  El salvado de los conjuntos de datos se realiza dentro de la carpeta datos, y dentro de la carpeta de juego correspondiente.
+
+**Compilacion**
+
+Dentro de robobit-ml, ejecutar el comando make data para compilar el archivo. Se generará un ejecutable llamado data_agent
+
+**Ejecucion**
+
+./data_agent <romfile>
+
+#Log_Agent
+
+log_agent.cpp provee una interfaz amigable para la carga de ficheros, el entrenamiento desde fichero, y el testeo del algoritmo de regresion logistica con fichero o para instancias unicas. La carga de fichero para el entrenamiento la realiza desde la carpeta datos. No hace falta especificar la subcarpeta de juego, el propio agente busca en la que correspone al parametro pasado por shell. El salvado de los pesos se realiza en la misma ruta donde se ejecuta y podemos especificar el nombre del archivo.
+
+**Compilacion**
+
+Dentro de robobit-ml, ejecutar el comando make log para compilar el archivo. Se generará un ejecutable llamado log_agent
+
+**Ejecucion**
+
+./log_agent <romfile>
+
+
+#nn_Agent
+
+nn_agent.cpp provee una interfaz amigable para la carga de ficheros, el entrenamiento desde fichero, y el testeo del algoritmo de regresion logistica con fichero o para instancias unicas. La carga de fichero para el entrenamiento la realiza desde la carpeta datos. No hace falta especificar la subcarpeta de juego, el propio agente busca en la que correspone al parametro pasado por shell. El salvado de los pesos se realiza en la misma ruta donde se ejecuta y podemos especificar el nombre del archivo. Si deseamos utilizar la funcionalidad de cargar pesos, debemos previamente copiar el archivo con los datos donde se entrenaron los pesos a la ruta del archivo de pesos, y deberemos nombrarlo de la forma <nombre_archivo_pesos>_data. Ejemplo: si guardamos los pesos en el archivo weights, debemos copiar el archivo "datos_tennis.txt" a la ruta donde esta weights y renombrarlo a "weights_data".
+
+**Compilacion**
+
+Dentro de robobit-ml, ejecutar el comando make net para compilar el archivo. Se generará un ejecutable llamado net_agent
+
+**Ejecucion**
+
+./log_agent <romfile>
+
+# ----------------BOTS---------------
+
+## Implementación y Características:
+
+Una vez que hayamos entrenado nuestros algoritmos de manera satisfactoria, podemos proceder a compilar nuestros bots para que juguen a los juegos. Existe un bot por algoritmo de entrenamiento. El bot no lee desde ningun fichero los parametros necesarios para jugar. Debemos ser nosotros quienes manualmente añadamos en el archivo de fuente <nombre_de_algoritmo>_bot.cpp los parametros caracterisiticos de cada algoritmo. Por ejemplo, para un bot de regresion logistica debemos añadir en el archivo el tamaño de tupla de entrada y salida, el maximo y el minimo del conjunto de datos, y los bias que deseamos. Todos estos datos estan encapsulados en los archivos de salvado de pesos de cada algoritmo respectivamente.
+
+**Compilacion**
+
+Dentro de robobit-ml, ejecutar el comando make <nombre_de_algoritmo>bot para compilar el archivo. Se generará un ejecutable llamado net_agent. Para mas info, consultar el makefile. 
+
+**Ejecucion**
+
+La ejecucion en este caso es igual que en los agentes, ya que en realidad el bot encapsula una de las funcoinalidades que ofrecen los agentes: 
+./<nombre_de_algoritmo>_bot <romfile>
+
+
+
+
+
+
+
+
+
+
+
