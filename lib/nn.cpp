@@ -363,7 +363,7 @@ void NeuralNetwork::loadBot(int input, int hidden, int out, double alfa, double 
   createNet();
 
   Alpha = alfa;
-  learnR = LR;
+  LR = learnR;
   int i, j, k;
   k = 0;
 
