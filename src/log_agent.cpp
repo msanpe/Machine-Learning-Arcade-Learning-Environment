@@ -81,15 +81,15 @@ float agentStep() {
   outputs = logistic.testOnInstance(v_inputs);
   for(int i=0; i<outputs.size(); i++){
     if(outputs[i] == 1){
-      /*Freeway*/
-      if(i == 0){
-        action = 2;
-      }else if(i == 1){
-        action = 5;
+      if(game_id == FREEWAY_ID){
+        if(i == 0){
+          action = 2;
+        }else if(i == 1){
+          action = 5;
+        }
+      }else{
+          action = i+3;
       }
-
-      /*Tennis*/
-      //action = i+3;
     }
   }
 
@@ -206,8 +206,7 @@ void testLogReg(){
 
   for (step = 0; !alei.game_over() && step < maxSteps; ++step)
   {
-
-     alei.act(PLAYER_A_FIRE);
+    if((step%100) == 0) alei.act(PLAYER_A_FIRE);
      totalReward += agentStep();
   }
 

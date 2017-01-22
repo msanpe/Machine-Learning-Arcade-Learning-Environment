@@ -409,12 +409,6 @@ float agentStep() {
    std::vector<float> v_inputs;
    std::vector<float> v_outputs;
 
-
-  if (alei.lives() != lastLives) {
-    --lastLives;
-    alei.act(PLAYER_A_FIRE);
-  }
-
    float reward = 0;
 
    int row,col;
@@ -531,7 +525,6 @@ int main(int argc, char **argv) {
 
    // Main loop
    int step;
-   alei.act(PLAYER_A_FIRE);
 
    for (step = 0; !alei.game_over() && step < maxSteps; ++step){
      initscr();
