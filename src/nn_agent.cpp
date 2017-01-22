@@ -109,7 +109,7 @@ void trainNet(void) {
   // entrenamiento
   for (i = 0; meanSquaredError > 0.01; ++i) { // entrena hasta error deseado
       std::cout << "Epoch " << i << " ----> ";
-      if (i == 10000) {  // limite que evita loops infinitos
+      if (i == 50000) {  // limite que evita loops infinitos
           std::cout << "Training is taking too many epochs" << std::endl;
           break;
       }
@@ -205,7 +205,7 @@ float agentStep() {
 
   float z_value;
   float max = -1;
-  int action;
+  int action = 0;
   std::vector<float> outputs;
 
 
@@ -242,7 +242,15 @@ float agentStep() {
 
   for(int i=0; i<outputs.size(); i++){
     if(outputs[i] == 1){
-      action = i+3;
+      /*Freeway*/
+      if(i == 0){
+        action = 2;
+      }else if(i == 1){
+        action = 5;
+      }
+
+      /*Tennis*/
+      //action = i+3;
     }
   }
 

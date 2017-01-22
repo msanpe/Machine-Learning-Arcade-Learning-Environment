@@ -64,6 +64,10 @@ float getFreeWayCalle(int param, ALEInterface &alei){
    return valor;
 }
 
+float getFreeWayPollo(ALEInterface &alei){
+  return (alei.getRAM().get(14) + ((rand() % 3) - 1));
+}
+
 void addTennisInputData(std::vector<float> & v_inputs, ALEInterface &alei)
 {
 
@@ -78,6 +82,7 @@ void addFreewayInputData(std::vector<float> & v_inputs, ALEInterface &alei)
   for(int  i =0; i<10; i++){
     v_inputs.push_back(getFreeWayCalle(i, alei));
   }
+  v_inputs.push_back(getFreeWayPollo(alei));
 }
 
 float max(float n1, float n2){

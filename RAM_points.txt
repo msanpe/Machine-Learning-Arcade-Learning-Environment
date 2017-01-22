@@ -1,0 +1,23 @@
+TENNIS
+playerx --> (3,2)
+playery --> (3,0)
+enemyx --> (3,3)
+enemyy --> (6,5)
+bally --> (6,7)
+ballx --> (2,0)
+ballz --> (2,1)
+
+FREEWAY
+calles numeradas de arriba a abajo
+pollo --> (1,6)
+calle 0 --> (5,3)
+calle 1 --> (5,4)
+calle 2 --> (5,5)
+calle 3 --> (5,6)
+calle 4 --> (5,7)
+-------------------
+calle 5 --> (14,0)
+calle 6 --> (13,7)
+calle 7 --> (13,6)
+calle 8 --> (13,5) 
+calle 9 --> (13,4) 

@@ -81,7 +81,15 @@ float agentStep() {
   outputs = logistic.testOnInstance(v_inputs);
   for(int i=0; i<outputs.size(); i++){
     if(outputs[i] == 1){
-      action = i+3;
+      /*Freeway*/
+      if(i == 0){
+        action = 2;
+      }else if(i == 1){
+        action = 5;
+      }
+
+      /*Tennis*/
+      //action = i+3;
     }
   }
 

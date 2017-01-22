@@ -173,6 +173,10 @@ float getFreeWayCalle(int param){
    return valor;
 }
 
+float getFreeWayPollo(){
+  return (ram.get(14) + ((rand() % 3) - 1));
+}
+
 void printPRam(ALERAM nram, int desp, bool color, int ac_typo){
 
   mvprintw(3, 0,"%s",prmesg);
@@ -368,6 +372,8 @@ void addFreewayCrudeData(std::vector<float> & v_inputs, std::vector<float> & v_o
   for(int  i =0; i<10; i++){
     v_inputs.push_back(getFreeWayCalle(i));
   }
+
+  v_inputs.push_back(getFreeWayPollo());
 
   for(int j=0; j<2; j++){
     if(j==0 && action_typo == PLAYER_A_UP){
